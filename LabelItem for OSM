@@ -1,0 +1,185 @@
+{{#ifexpr:{{{shape-halo|0}}}>0|
+{ {{{xy|}}}, 
+"size": "{{#expr:trunc({{{mark-size|10}}}+({{{shape-halo|0}}}*1.8))}}0",
+{{#ifexpr:{{Str len|{{{shape-color|}}} }}<8|"color": "{{{shape-color|#AA1056}}}30",
+"strokeColor": "{{{shape-color|#AA1056}}}06"|
+"color": "#{{Str sub new|{{{shape-color|AA1056}}}|2|7}}01",
+"strokeColor": "#{{Str sub new|{{{shape-color|#AA1056}}}|2|7}}70"}},
+"shape": "{{#switch:{{{shape|}}}|circle| square| cross| diamond| triangle-up| triangle-down={{{shape|}}}|circle}}"},
+}} 
+{{#ifeq:{{#invoke:String |sub|{{{label-line|}}}xxx| 1|1}}|3| <!-- ------------ if photo-panel - draw a panel and then add a picture-->
+ { "size":0,                    <!---------------avoid extra shape and construct panel, adding ldx, ldy to coord x,y's -->
+"x": {{#expr:{{#invoke:String|match|s={{#invoke:String2 |split |{{{xy|"x":2,"y":4}}}|:|2}}|pattern= [%d.-]+ }}+{{{label-offset-x|0}}} }}, 
+"y": {{#expr:{{#invoke:String2 |split |txt={{{xy|}}}|sep=:|idx=3}}+{{{label-offset-y|0}}} }},
+"height": 48, "width": {{if empty|{{#invoke:String2 |split |txt={{{label-line|}}}|sep=!|idx=4}}|120}},
+"cornerRadius": 2, "shape-color": "#E8E8D6", "stroke-color": "{{{label-color|#777755}}}", "strokeWidth":1
+},
+{ 
+{{#ifeq:{{{label-pos|}}}|left| <!-- move x to either left or right side of the panel for photo-panel image-->
+"x": {{#expr:{{#invoke:String|match|s={{#invoke:String2 |split |{{{xy|"x":2,"y":4}}}|:|2}}|pattern= [%d.-]+ }}+{{{label-offset-x|0}}}-({{if empty|{{#invoke:String2 |split |txt={{{label-line|}}}|sep=!|idx=4}}|120}}/2)+1+({{if empty|{{#invoke:String2 |split |txt={{{label-line|}}}|sep=!|idx=2}}|46}}/2) }}, 
+|"x": {{#expr:{{#invoke:String|match|s={{#invoke:String2 |split |{{{xy|"x":2,"y":4}}}|:|2}}|pattern= [%d.-]+ }}+{{{label-offset-x|0}}}+({{if empty|{{#invoke:String2 |split |txt={{{label-line|}}}|sep=!|idx=4}}|120}}/2)-1-({{if empty|{{#invoke:String2 |split |txt={{{label-line|}}}|sep=!|idx=2}}|46}}/2) }}, 
+}}
+"y": {{#expr:{{#invoke:String2 |split |txt={{{xy|}}}|sep=:|idx=3}}+{{{label-offset-y|0}}} }},
+"url":"{{filepath:{{#invoke:String2 |split |txt={{{label-line|}}}|sep=!|idx=3}}|{{if empty|{{#invoke:String2 |split |txt={{{label-line|}}}|sep=!|idx=2}}|46}}  }}",
+"height": 46, "width": {{if empty|{{#invoke:String2 |split |txt={{{label-line|}}}|sep=!|idx=2}}|46}}
+}, }}
+{ {{{xy|}}}, <!------------- built in shapes -->
+{{#switch:{{{shape|}}}
+|circle| square| cross| diamond| triangle-up| triangle-down| triangle| stroke| arrow| wedge=
+ "size": "{{#ifexpr:{{{mark-size|10}}}>2|{{#expr:{{{mark-size|10}}}^2}} }}", 
+ "shape-color": "{{{shape-color|}}}", "stroke": "{{{shape-outline|}}}",
+ "strokeWidth": {{if empty|{{#invoke:String2 |split |{{{outline-extras|}}}|,|2}}|0}}, <!-- extras have 1=color,2=width,3=opacity%,dash[1,1] -->
+ "strokeOpacity": {{#expr:{{if empty|{{#invoke:String2 |split |{{{outline-extras|}}}|,|3}}|100}}*0.01}},
+ "strokeDash": [{{if empty|{{#invoke:String2 |split |{{{outline-extras|}}}|[|2}}|]}},
+ "angle": "{{{shape-angle}}}", "shape": "{{{shape|}}}", 
+|star|ring|line|ellipse|box|triad|other=
+"size": 0,     <!-- params: x,y,mark=svg path,box-size=height,width, etc-->
+ "type": "path",
+ "path": "{{OSM Location map/SVGpaths|shape={{{shape|}}}|mark={{{mark|}}} }}",
+ "scaleY": {{#expr:{{#invoke:String2 |split |{{{box-size|1,1}}},{{{box-size|1}}}|,|1}}/10 }},
+ "scaleX": {{#expr:{{#invoke:String2 |split |txt={{{box-size|1}}}|sep=,|idx=2}}/10 }},
+ "fill": "{{{shape-color|}}}", "stroke": "{{{shape-outline|}}}", 
+ "strokeWidth": {{if empty|{{#invoke:String2 |split |{{{outline-extras|}}}|,|2}}|0}}, <!-- extras have 1=color,2=width,3=opacity%,dash[1,1] -->
+ "strokeOpacity": {{#expr:{{if empty|{{#invoke:String2 |split |{{{outline-extras|}}}|,|3}}|100}}*0.01}},
+ "strokeDash": [{{if empty|{{#invoke:String2 |split |{{{outline-extras|}}}|[|2}}|]}},
+ "angle": "{{{shape-angle|}}}", 
+|panel= "type":"rect", "size":0, <!---------------construct a panel-->
+ "height": {{#invoke:String2 |split |txt={{{box-size|50}}},{{{box-size|50}}}|sep=,|idx=1}}, 
+ "width": {{#invoke:String2 |split |txt={{{box-size|50}}}|sep=,|idx=2}},
+ "cornerRadius": {{#invoke:String2 |split |txt={{{box-size|0}}},0,0|sep=,|idx=3}},
+ "shape-color": "{{{shape-color}}}",
+ "stroke-color": "{{{shape-outline}}}",
+ "angle": "{{{shape-angle}}}",
+ "strokeWidth": {{if empty|{{#invoke:String2 |split |{{{outline-extras|}}}|,|2}}|0}}, <!-- extras have 1=color,2=width,3=opacity%,dash[1,1] -->
+ "strokeOpacity": {{#expr:{{if empty|{{#invoke:String2 |split |{{{outline-extras|}}}|,|3}}|100}}*0.01}},
+ "strokeDash": [{{if empty|{{#invoke:String2 |split |{{{outline-extras|}}}|[|2}}|]}},
+|path=  "size": 0,     <!-- params: x,y,mark=svg path,box-size =1, etc-->
+ "type": "path",
+ "path": "{{{mark|M 0 -5 h 10 v 10 h -10 Z}}}",
+ "scaleY": {{#invoke:String2 |split |{{{box-size|1,1}}},{{{box-size|1}}}|,|1}},
+ "scaleX": {{#invoke:String2 |split |{{{box-size|1,1}}},{{{box-size|1}}}|,|2}},
+ "fill": "{{{shape-color|}}}", "stroke": "{{{shape-outline|}}}",
+ "strokeWidth": {{if empty|{{#invoke:String2 |split |{{{outline-extras|}}}|,|2}}|0}}, <!-- extras have 1=color,2=width,3=opacity%,dash[1,1] -->
+ "strokeOpacity": {{#expr:{{if empty|{{#invoke:String2 |split |{{{outline-extras|}}}|,|3}}|100}}*0.01}},
+ "strokeDash": [{{if empty|{{#invoke:String2 |split |{{{outline-extras|}}}|[|2}}|]}},
+ "angle": "{{{shape-angle|}}}", 
+|{{#ifexpr:{{{mark-size|10}}}=0 
+  |"size": 0, <!------------------------no shape, or place an image -->
+  | "url": "{{filepath:{{#if:{{{mark|}}}|{{{mark}}}|Red pog.svg}}|{{#expr:trunc({{{mark-size|10}}}*{{{mark-dim|1}}}) }} }}", "height": {{{mark-size|10}}}, "width": {{#expr:trunc({{{mark-size|10}}}*{{{mark-dim|1}}}) }}, }}
+}}
+{{#ifeq:{{{label-line|}}}|4 <!---------- add number to text for n-line or  just add label-->
+  |{{#ifeq:{{{label-pos|}}}|left| "text": "{{{label|}}} {{{numbered|}}}",| "text": "{{{numbered|}}} {{{label|}}}", }} 
+  "textColor": "{{{shape-color|}}}",   
+  | "text": "{{{label|}}}",   "textColor": "{{{label-color|}}}", }}
+{{#ifeq:{{{shape|}}}|panel| <!-------------handle text in a panel as justified L/R rather than positioned left or right. not for labela labelb -->
+ "textAlign": "{{#switch:{{{label-pos|}}}|left=left|right=right|top|center|bottom=center|right}}", 
+ "baseline": {{#switch:{{{label-pos|}}}|left|right|center="bottom"|"bottom"}}, "textDx": {{#switch:{{{label-pos|}}} <!-- higher Dx pushes label to the right -->
+ |left={{#expr:trunc(0-{{#invoke:String2 |split |txt={{{box-size|50}}}|sep=,|idx=2}}/2)+3+{{{label-offset-x|0}}} }}
+ |right={{#expr:trunc({{#invoke:String2 |split |txt={{{box-size|50}}}|sep=,|idx=2}}/2)-3+{{{label-offset-x|0}}} }}
+ |top|bottom|center={{{label-offset-x|0}}}
+ |0}}, "textDy": {{#switch:{{{label-pos|}}} <!-- higher Dy pushes label down the map -->
+ |left| right| top={{#expr:trunc(0-{{#invoke:String2 |split |txt={{{box-size|50}}},{{{box-size|50}}}|sep=,|idx=1}}/2)+{{{label-offset-y|0}}}+{{{label-size|9}}}+4 }}
+ |bottom={{#expr:trunc({{#invoke:String2 |split |txt={{{box-size|50}}},{{{box-size|50}}}|sep=,|idx=1}}/2)-6+{{{label-offset-y|0}}} }}
+ |center={{#expr:{{{label-offset-y|0}}}+({{{label-size|10}}}/2.2) }}
+ |1}},
+|{{#ifeq:{{#invoke:String |sub|{{{label-line|}}}xxx| 1|1}}|3| <!-- ------------ or if photo-panel -->
+ "textAlign": "{{#switch:{{{label-pos|}}}|left=right|right=left|top|center|bottom=center|right}}", 
+ "baseline": {{#switch:{{{label-pos|}}}|left|right|center="middle"|"bottom"}}, "textDx": {{#switch:{{{label-pos|}}} <!-- higher Dx pushes label to the right -->
+ |left={{#expr:{{{label-offset-x|0}}}+({{if empty|{{#invoke:String2 |split |txt={{{label-line|}}}|sep=!|idx=4}}|120}}/2)-5 }}
+ |top|bottom|center={{{label-offset-x|0}}}
+ | {{#expr:{{{label-offset-x|0}}}-({{if empty|{{#invoke:String2 |split |txt={{{label-line|}}}|sep=!|idx=4}}|120}}/2)+5 }}
+}}, "textDy": {{#ifexpr:{{#invoke:string|find|{{{label|}}}|^}}   <!-- higher Dy pushes label down the map -->
+| {{#expr:{{{label-offset-y|0}}}-{{{label-size|9}}}+4 }}
+| {{#expr:{{{label-offset-y|0}}}-({{{label-size|9}}}/2)+4 }} }}, 
+<!---------------or normal text align, etc -->
+|{{#if:{{{label-angle|}}}|"textAngle": {{{label-angle|0}}},|}}
+ "textAlign": "{{#switch:{{{label-pos|}}}
+ |left=right|right=left|top|center|bottom=center|right}}", "baseline": {{#switch:{{{label-pos|}}}|left|right|center="middle"|"bottom"}}, 
+"textDx": {{#switch:{{{label-pos|}}} <!-- higher Dx pushes label to the right -->
+  |left={{#expr:trunc(0-{{{mark-size|10}}}/2*{{{mark-dim|1}}})-2+{{{label-offset-x}}}|0}}
+  |right={{#expr:trunc({{{mark-size|10}}}/2*{{{mark-dim|1}}})+2+{{{label-offset-x}}}|0}}
+  |top|bottom|center={{{label-offset-x|0}}}
+|0}}, "textDy": {{#switch:{{{label-pos|}}} <!-- higher Dy pushes label down the map -->
+ |left|right={{#expr:{{#if:{{{label-offset-y}}}|{{{label-offset-y|0}}}|0}}+2}}
+ |top={{#expr:trunc(0-{{{mark-size|10}}}/2)-2+{{{label-offset-y|0}}}{{#if:{{{labela|}}}|-{{{label-size|10}}}-1}}{{#if:{{{labelb|}}}|-{{{label-size|9}}}-1}} }}
+ |bottom={{#expr:trunc({{{mark-size|10}}}/2)+{{{label-size|10}}}+{{#if:{{{label-offset-y|}}}|{{{label-offset-y}}}|0}} }}
+ |center={{{label-offset-y|0}}}
+|1}}, }} }}
+"textFontSize": {{{label-size|12}}}
+}, 
+{{#if:{{{labela|}}}| {
+{{{xy|}}},
+ "size": "0", 
+ "text": "{{{labela|}}}", {{#if:{{{label-angle|}}}|"textAngle": {{{label-angle|0}}}, |}}
+"textAlign": "{{#switch:{{{label-pos|}}}
+|left=right|right=left|top|center|bottom=center|right}}", "baseline": {{#switch:{{{label-pos|}}}|left|right|center="middle"|"bottom"}}, 
+"textDx": {{#switch:{{{label-pos|}}} <!-- higher Dx pushes label to the right -->
+|left={{#expr:trunc(0-{{{mark-size|10}}}/2*{{{mark-dim|1}}})-2+{{{label-offset-x}}}|0}}
+|right={{#expr:trunc({{{mark-size|10}}}/2*{{{mark-dim|1}}})+2+{{{label-offset-x}}}|0}}
+|top|bottom|center={{{label-offset-x|0}}}
+|0}}, "textDy": {{#switch:{{{label-pos|}}} <!-- higher Dy pushes label down the map -->
+|left|right={{#expr:{{{label-offset-y|0}}}+1+{{{label-size|10}}}+1}}
+|top={{#expr:trunc(0-{{{mark-size|10}}}/2)-2+{{{label-offset-y|0}}}{{#if:{{{labelb|}}}|-{{{label-size|10}}}-1}} }}
+|bottom={{#expr:trunc({{{mark-size|10}}}/2)+{{{label-offset-y|0}}}+(2*({{{label-size|10}}}+1)) }}
+|center={{{label-offset-y|0}}}
+|1}}, 
+"textFontSize": {{{label-size|12}}}{{#if:{{{label-color|}}}|, "textColor": "{{{label-color}}}" }}
+}, |}}
+{{#if:{{{labelb|}}}|
+{
+{{{xy|}}}, 
+ "size": "0", 
+ "text": "{{{labelb|}}}", {{#if:{{{label-angle|}}}|"textAngle": {{{label-angle|0}}}, |}}
+"textAlign": "{{#switch:{{{label-pos|}}}
+|left=right|right=left|top|center|bottom=center|right}}", "baseline": {{#switch:{{{label-pos|}}}|left|right|center="middle"|"bottom"}}, 
+"textDx": {{#switch:{{{label-pos|}}} <!-- higher Dx pushes label to the right -->
+|left={{#expr:trunc(0-{{{mark-size|10}}}/2*{{{mark-dim|1}}})-2+{{#if:{{{label-offset-x|}}}|{{{label-offset-x}}}|0}} }}
+|right={{#expr:trunc({{{mark-size|10}}}/2*{{{mark-dim|1}}})+2+{{#if:{{{label-offset-x|}}}|{{{label-offset-x}}}|0}} }}
+|top|bottom|center={{{label-offset-x|0}}}
+|0}}, "textDy": {{#switch:{{{label-pos|}}} <!-- higher Dy pushes label down the map -->
+|left|right={{#expr:{{{label-offset-y|0}}}+1+{{{label-size|10}}}+1+{{{label-size|10}}}+1}}
+|top={{#expr:trunc(0-{{{mark-size|10}}}/2)-2+{{{label-offset-y|0}}} }}
+|bottom={{#expr:trunc({{{mark-size|10}}}/2)+1+{{{label-offset-y}}}+(3*({{{label-size|10}}}+1)) }}
+|center={{{label-offset-y|0}}}
+|1}}, 
+"textFontSize": {{{label-size|12}}}{{#if:{{{label-color|}}}|, "textColor": "{{{label-color}}}" |}}
+}, |}}
+{{#ifeq:{{{mark-size|0}}}|0||{{#ifeq:{{{label-line|}}}|4||<!-- dont add of n-line -->
+  {{#switch:{{{numbered|}}}|0=| <!----------- add number/letter if numbered -->
+{
+{{{xy|}}}, 
+ "size": "0", 
+ "text": "{{{numbered|}}}", 
+ "textAlign": "center", "baseline": "bottom", "textDx": 0, "textDy": {{#ifexpr:{{#invoke:string|find|{{{numbered|}}}|^}} | -2 | {{#expr:trunc({{{mark-size|10}}}/2.2)+1 }} }}, 
+  "textFontSize": {{#expr:trunc({{{mark-size|10}}}*0.88)}}, "textFontWeight": "bold", "textColor": "{{{shape-outline|#FFFFFF}}}"
+  }, }} }} }} 
+{{#switch:{{#invoke:String |sub|{{{label-line|}}}xxx| 1|1}}|1|3|4 = <!-------- draw line for 'with-line', 'n-line' and 'photo-panel' options -->
+{ {{{xy|"x":3,"y":5}}}, 
+"x2":{{#switch:{{{label-pos|}}}
+|left={{#expr:{{#invoke:String|match|s={{#invoke:String2 |split |{{{xy|"x":3,"y":5}}}|:|2}}|pattern= [%d.-]+ }}+{{{label-offset-x|0}}}-({{{mark-size|10}}}/2)}}
+|right={{#expr:{{#invoke:String|match|s={{#invoke:String2 |split |{{{xy|"x":3,"y":5}}}|:|2}}|pattern= [%d.-]+ }}+{{{label-offset-x|0}}}+({{{mark-size|10}}}/2)}}
+|{{#expr:{{#invoke:String|match|s={{#invoke:String2 |split |{{{xy|"x":3,"y":5}}}|:|2}}|pattern= [%d.-]+ }}+{{{label-offset-x|0}}} }}
+}},
+"y2":{{#switch:{{{label-pos|}}}
+|bottom={{#expr:{{#invoke:String2 |split |{{{xy|"x":3,"y":5}}}|:|3}}+{{{label-offset-y|0}}}+{{{mark-size|10}}}/2}}
+|top={{#expr:{{#invoke:String2 |split |{{{xy|"x":3,"y":5}}}|:|3}}+{{{label-offset-y|0}}}-{{{mark-size|10}}}/2}}
+|{{#expr:{{#invoke:String2 |split |{{{xy|"x":3,"y":5}}}|:|3}}+{{{label-offset-y|0}}}+2 }}
+}},
+{{#switch:{{{label-line|}}}|1|4| <!-- line options for with-line, or use defaults for photo-panel -->
+ "strokeWidth": {{#ifeq:{{#invoke:String2 |split |{{{outline-extras|}}}|,|2}}|0|1, "strokeOpacity": 1,  <!-- ensure with-line has a width and opacity-->
+   |{{if empty|{{#invoke:String2 |split |{{{outline-extras|}}}|,|2}}|1}},            <!-- extras have 1=color,2=width,3=opacity%,dash[1,1] -->
+   "strokeOpacity": {{#expr:{{if empty|{{#invoke:String2 |split |{{{outline-extras|}}}|,|3}}|100}}*0.01}}, }}
+ "strokeDash": [{{if empty|{{#invoke:String2 |split |{{{outline-extras|}}}|[|2}}|]}},
+ "rule-stroke": {{#ifeq:{{{label-line|}}}|4|"{{{shape-color|}}}"|"{{{shape-outline|}}}"}}, <!-- use shape-color for n-line-->
+| "rule-stroke": "{{{label-color|#777755}}}", "strokeWidth": 1,}}
+"size":0
+},
+|2= <!-- 'line-next' to connect to next numbered coord -->
+{ {{{xy|}}}, {{{x2y2|"x":0,"y":0}}},
+ "rule-stroke": "{{{shape-outline|#777755}}}",
+ "strokeWidth": {{#ifeq:{{#invoke:String2 |split |{{{outline-extras|}}}|,|2}}|0|1, "strokeOpacity": 1, <!-- ensure line-next has a width and opacity-->
+   |{{if empty|{{#invoke:String2 |split |{{{outline-extras|}}}|,|2}}|1}},            <!-- extras have 1=color,2=width,3=opacity%,dash[1,1] -->
+   "strokeOpacity": {{#expr:{{if empty|{{#invoke:String2 |split |{{{outline-extras|}}}|,|3}}|100}}*0.01}}, }}
+ "strokeDash": [{{if empty|{{#invoke:String2 |split |{{{outline-extras|}}}|[|2}}|]}},
+"size":0
+},}}
