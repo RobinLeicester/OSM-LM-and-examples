@@ -1,0 +1,70 @@
+{{#if:{{#invoke:string|match|s={{{1|}}}|pattern=^#...$|ignore_errors=1}}
+|{{#invoke:string|replace|source={{{1|}}}|pattern=#(.)(.)(.)|replace=%1%1%2%2%3%3|plain=0}} <!-- expand #ABC to AABBCC hex -->
+|{{#ifeq:{{#invoke:String|pos| ignore_errors=true| target={{{1|null}}}| pos=1}}|#|{{#invoke:String|sub|{{{1|}}}|2|}}|<!-- returns everything except # -->
+{{#switch:{{#invoke:String2 |split |{{{1|}}}|sep=,|idx=1}}
+| pale blue=D6E1EC|soft blue=77A1CB| hard blue=5581A9| dark blue=105396|
+soft blue 50%=77A1CB77| hard blue 50%=5581A977| dark blue 50%=10539677|
+
+pale gray|pale grey=E8E8D6|soft gray|soft grey=AAAA88| hard gray|hard grey=777755| dark gray|dark grey=333322| 
+soft gray 50%|soft grey 50%=AAAA8877| hard gray 50%|hard grey 50%=77775577| dark gray 50%|dark grey 50%=33332277| 
+
+pale green=D2F0E5|soft green=81AF81| hard green=538253| dark green=165916|
+soft green 50%=81AF8177| hard green 50%=53825377| dark green 50%=16591677|
+
+pale brown=FAF6ED|soft brown=CCB56C| hard brown=AD7F14| dark brown=8E5913|
+soft brown 50%=CCB56C77| hard brown 50%=AD7F1477| dark brown 50%=8E591377|
+
+pale red=FCC6C0|soft red=DB3123| hard red=AA1205| dark red=7A0101|
+soft red 50%=DB312377| hard red 50%=AA120577| dark red 50%=7A010177|
+
+background1=F9F5E7|
+background1 50%=F9F5E777|
+
+White|white	=FFFFFF|
+Silver|silver	=C0C0C0|
+Gray|gray|Grey|grey	=808080|
+
+Red|red	        =FF0000|
+Maroon|maroon	=800000|
+Yellow|yellow	=FFFF00|
+
+Olive|olive	=808000|
+Lime|lime	=00FF00|
+Green|green	=008000|
+
+Aqua|aqua	=00FFFF|
+Teal|teal	=008080|
+Blue|blue	=0000FF|
+
+Navy|navy	=000080|
+Fuchsia|fuschia	=FF00FF|
+Purple|purple	=800080|
+Black|black	=000000|
+
+White 50%|white	50% =FFFFFF77|
+Silver 50%|silver  50%=C0C0C077|
+Gray 50%|gray 50%|Grey 50%|grey 50%	=80808077|
+
+Red 50%|red 50%	        =FF000077|
+Maroon 50%|maroon 50%	=80000077|
+Yellow 50%|yellow 50%	=FFFF0077|
+
+Olive 50%|olive 50%	=80800077|
+Lime 50%|lime 50%	=00FF0077|
+Green 50%|green 50%	=00800077|
+
+Aqua 50%|aqua 50%	=00FFFF77|
+Teal 50%|teal 50%	=00808077|
+Blue 50%|blue 50%	=0000FF77|
+
+Navy 50%|navy 50%	=00008077|
+Fuchsia 50%|fuschia 50%	=FF00FF77|
+Purple 50%|purple 50%	=80008077|
+Black 50%|black 50%	=00000077|
+
+222211 }} }} }}{{#if:{{#invoke:String2 |split |{{{1|}}}|sep=,|idx=2}}
+ | {{Hexadecimal|{{#expr:{{#invoke:String2 |split |{{{1|}}}|sep=,|idx=2}}*2.55}}|no}} 
+ | {{#ifexpr:{{{opacity|}}}|{{Hexadecimal|{{#expr:{{{opacity|100}}}*2.55}}|no}} }} }}<noinclude>
+{{documentation}}
+[[Category:OSM Location map templates]]
+</noinclude>
