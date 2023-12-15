@@ -1,0 +1,223 @@
+{{#tag:graph|{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+"width": {{{width|400}}},
+"height": {{{height|300}}},
+"padding": 0,
+"autosize": "none",
+"data": [
+ {
+      "name": "graticules",
+      "values": [ {{{graticules| {} }}}
+   ],
+},
+    {
+      "name": "table1",
+      "values": [ 
+  {{{1|}}}
+          ]
+   },
+],
+
+"marks": [
+  {
+   "name":"map",
+   "type":"image",
+      "encode": {
+        "enter": {
+    {{{mapvalues|
+     "xc": {"value": 30},
+     "yc": {"value": 20},
+     "width": {"value": 60},
+     "height":{"value": 40},
+     "url": {"value": ""}, }}}
+     "aspect": {"value": false},
+     "offsetX": {"value": 0},
+     "offsetY": {"value": 0}
+     }
+    }
+  },{
+  "name":"graticulex", "type": "rule",
+  "from": {"data":"graticules"},
+ "encode": {
+  "enter": {
+   "x": {"field": "x" }, "y": {"value": 0 },
+   "x2": {"field": "x" }, "y2": {"value": {{{height|300}}} },
+   "stroke": {"value": "DarkBlue"}, "strokeOpacity":{"value": 0.2 },
+  }
+ }
+},{
+  "name":"graticuley", "type": "rule",
+  "from": {"data":"graticules"},
+ "encode": {
+  "enter": {
+   "x": {"value": 0 }, "y": {"field": "y" },
+   "x2": {"value": {{{width|400}}} },  "y2": {"field": "y" },
+   "stroke": {"value": "DarkBlue"},  "strokeOpacity":{"value": 0.2 },
+  }
+ }
+},{
+  "name": "gratxlabels", "type": "text",
+  "from": {"data":"graticules"},
+  "encode": {
+   "enter": {
+   "x": {"field": "x" },  "y": {"value": 10 },
+   "fill": {"value": "DarkBlue"}, "fontSize": {"value": 8 },
+   "text": {"field": "lon"},
+   }
+  }
+ },
+ {
+  "name": "gratylabels", "type": "text",
+  "from": {"data":"graticules"},
+  "encode": {
+   "enter": {
+   "yc": {"field": "y" },  "xc": {"value": 10 },
+   "fill": {"value": "DarkBlue"}, "fontSize": {"value": 8 },
+   "text": {"field": "lat"},
+   }
+  }
+ },
+  {
+"name":"rule",
+"type": "rule",
+  "from": {"data":"table1"},
+ "encode": {
+  "enter": {
+   "x": {"field": "x" },
+   "y": {"field": "y" },
+   "x2": {"field": "x2" },
+   "y2": {"field": "y2" },
+   "strokeWidth": {"field": "strokeWidth" },
+   "stroke": {"field": "rule-stroke"},
+   "strokeOpacity":{"field": "strokeOpacity" },
+   "strokeDash": {"field": "strokeDash"},
+   "strokeCap": {"value": "round"}
+  }
+ }
+},
+{
+    "name": "rect",
+    "type": "rect",
+      "from": {"data":"table1"},
+      "encode": {
+        "enter": {
+     "xc": {"field": "x"},
+     "yc": {"field": "y"},
+     "width": {"field": "width" },
+     "height":{"field": "height" },
+     "fill": {"field": "shape-color"},
+     "fillOpacity": {"field": "fillOpacity"},
+   "strokeWidth": {"field": "strokeWidth" },
+   "stroke": {"field": "stroke-color"},
+   "strokeOpacity":{"field": "strokeOpacity" },
+   "strokeDash": {"field": "strokeDash"},
+   "cornerRadius": {"field": "cornerRadius" }
+     }
+    }
+  },
+ {
+    "type": "image",
+      "from": {"data":"table1"},
+      "encode": {
+        "enter": {
+     "xc": {"field": "x"},
+     "yc": {"field": "y"},
+     "width": {"field": "width"},
+     "height":{"field": "height"},
+     "url": {"field": "url"},
+     "aspect": {"value": false},
+     "offsetX": {"value": 0},
+     "offsetY": {"value": 0}
+     }
+    }
+  },{
+    "name": "path",
+    "type": "path",
+      "from": {"data":"table1"},
+      "encode": {
+        "enter": {
+     "xc": {"field": "x"},
+     "yc": {"field": "y"},
+     "path": {"field": "path"},
+     "scaleX": {"field": "scaleX" },
+     "scaleY":{"field": "scaleY" },
+     "fill": {"field": "fill"},
+     "fillOpacity": {"field": "fillOpacity"},
+   "strokeWidth": {"field": "strokeWidth" },
+   "stroke": {"field": "stroke"},
+   "strokeOpacity":{"field": "strokeOpacity" },
+   "strokeDash": {"field": "strokeDash"},
+   "angle": {"field": "angle"}
+     } 
+    }
+  },
+    {
+    "name": "shapes",
+    "type": "symbol",
+      "from": {"data":"table1"},
+      "encode": {
+        "enter": {
+     "xc": {"field": "x"},
+     "yc": {"field": "y"},
+     "shape": {"field": "shape"},
+     "size": {"field": "size" },
+     "width": {"field": "sdx"}, <!-- pixel shift for shapes -ve is right and down -->
+     "height": {"field": "sdy"},
+     "fill": {"field": "shape-color"},
+     "fillOpacity": {"field": "fillOpacity"},
+   "strokeWidth": {"field": "strokeWidth" },
+   "stroke": {"field": "stroke"},
+   "strokeOpacity":{"field": "strokeOpacity" },
+   "strokeDash": {"field": "strokeDash"},
+   "angle": {"field": "angle"} 
+     } 
+    }
+  },
+    {  "name": "segments",
+      "type": "arc",
+      "from": {"data":"table1"},
+   "encode": {
+   "enter": {
+    "xc": {"field": "x" },
+    "yc": {"field": "y" },
+    "startAngle": {"field": "startAngle"},
+    "endAngle": {"field": "endAngle" },
+    "innerRadius": {"field": "innerRadius" },
+    "outerRadius": {"field": "outerRadius" },
+    "cornerRadius": {"field": "cornerRadius" },
+    "padAngle": {"field": "padAngle"},
+    "fill": {"field": "fill"},
+   "fillOpacity": {"field": "fillOpacity"},
+   "strokeWidth": {"field": "strokeWidth" },
+   "stroke": {"field": "stroke"},
+   "strokeOpacity":{"field": "strokeOpacity" },
+   "strokeDash": {"field": "strokeDash"},
+   "angle": {"field": "angle"}
+    }
+    }
+    },   
+   {
+      "name": "texts",
+      "type": "text",
+      "from": {"data":"table1"},
+  "encode": {
+   "enter": {
+   "xc": {"field": "x" },
+   "yc": {"field": "y" },
+   "align": {"field": "textAlign"},
+   "baseline": {"field": "baseline"},
+   "angle": {"field": "textAngle" },
+   "fill": {"field": "textColor"},
+   "text": {"field": "text"},
+   "fontSize": {"field": "textFontSize" },
+   "fontWeight": {"value": "normal"},
+   "fontStyle": {"value": "normal"},
+   "lineBreak": {"value": "^"},
+   "dx": {"field": "textDx" },
+   "dy": {"field": "textDy" }
+   }
+  }
+ }
+  ]
+}
+ }}
