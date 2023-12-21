@@ -1,0 +1,169 @@
+{
+{{OSM Location map/Getxy|lon={{#expr:{{{arc-lon|2}}}+(0-(sin({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (sin({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}))*{{{ellipse-factor|1}}} }}
+|lat={{#expr:{{{arc-lat|50}}}+(0-(cos({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (cos({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}))/{{{ellipse-factor|1}}} }}|lonbase={{{lonbase|2.002}}}|latbase={{{latbase|50.03}}}|width={{{width|400}}}|height={{{height|300}}}|zoom={{{zoom|10}}} }},
+"size": "0", "text": "{{#invoke:String|pos|{{{arc-text|abcdefg}}}|1|ignore_errors=1}}",
+ "textAngle": {{#expr: {{{arc-angle|-45}}}-{{#ifexpr:{{{arc-gap|1}}}<0|180|0}} }}, 
+"textAlign": "center", "baseline": "bottom", "textFontSize": {{{arc-text-size|10}}}, "textColor": "{{{arc-text-color|#554433}}}"
+}, 
+{
+{{OSM Location map/Getxy|lon={{#expr:{{{arc-lon|2}}}+(0-(sin({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (sin(({{{arc-angle|-45}}}+{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))*{{{ellipse-factor|1}}} }}
+|lat={{#expr:{{{arc-lat|50}}}+(0-(cos({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (cos(({{{arc-angle|-45}}}+{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))/{{{ellipse-factor|1}}} }}|lonbase={{{lonbase|2.002}}}|latbase={{{latbase|50.03}}}|width={{{width|400}}}|height={{{height|300}}}|zoom={{{zoom|10}}} }}, 
+"size": "0", "text": "{{#invoke:String|pos|{{{arc-text|abcdefg}}}|2|ignore_errors=1}}",
+ "textAngle": {{#expr:{{{arc-angle|-45}}}+(1*{{{arc-gap|1}}}-{{#ifexpr:{{{arc-gap|1}}}<0|180|0}} ) }}, 
+"textAlign": "center", "baseline": "bottom", 
+"textFontSize": {{{arc-text-size|10}}}, "textColor": "{{{arc-text-color|#554433}}}"
+},  
+{
+{{OSM Location map/Getxy|lon={{#expr:{{{arc-lon|2}}}+(0-(sin({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (sin(({{{arc-angle|-45}}}+2*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))*{{{ellipse-factor|1}}} }}
+|lat={{#expr:{{{arc-lat|50}}}+(0-(cos({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (cos(({{{arc-angle|-45}}}+2*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))/{{{ellipse-factor|1}}} }}|lonbase={{{lonbase|2.002}}}|latbase={{{latbase|50.03}}}|width={{{width|400}}}|height={{{height|300}}}|zoom={{{zoom|10}}} }}, 
+"size": "0", "text": "{{#invoke:String|pos|{{{arc-text|abcdefg}}}|3|ignore_errors=1}}",
+ "textAngle": {{#expr:{{{arc-angle|-45}}}+(2*{{{arc-gap|1}}}-{{#ifexpr:{{{arc-gap|1}}}<0|180|0}} ) }},
+"textAlign": "center", "baseline": "bottom", 
+"textFontSize": {{{arc-text-size|10}}}, "textColor": "{{{arc-text-color|#554433}}}"
+},
+{
+{{OSM Location map/Getxy|lon={{#expr:{{{arc-lon|2}}}+(0-(sin({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (sin(({{{arc-angle|-45}}}+3*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))*{{{ellipse-factor|1}}} }}
+|lat={{#expr:{{{arc-lat|50}}}+(0-(cos({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (cos(({{{arc-angle|-45}}}+3*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))/{{{ellipse-factor|1}}} }}|lonbase={{{lonbase|2.002}}}|latbase={{{latbase|50.03}}}|width={{{width|400}}}|height={{{height|300}}}|zoom={{{zoom|10}}} }}, 
+"size": "0", "text": "{{#invoke:String|pos|{{{arc-text|abc}}}|4|ignore_errors=1}}",
+ "textAngle": {{#expr:{{{arc-angle|-45}}}+(3*{{{arc-gap|1}}}-{{#ifexpr:{{{arc-gap|1}}}<0|180|0}} ) }},
+"textAlign": "center", "baseline": "bottom", 
+"textFontSize": {{{arc-text-size|10}}}, "textColor": "{{{arc-text-color|#554433}}}"
+}, {{#ifexpr:{{Str len|{{{arc-text|abc}}} }}>4|
+{ 
+{{OSM Location map/Getxy|lon={{#expr:{{{arc-lon|2}}}+(0-(sin({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (sin(({{{arc-angle|-45}}}+4*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))*{{{ellipse-factor|1}}} }}
+|lat={{#expr:{{{arc-lat|50}}}+(0-(cos({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (cos(({{{arc-angle|-45}}}+4*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))/{{{ellipse-factor|1}}} }}|lonbase={{{lonbase|2.002}}}|latbase={{{latbase|50.03}}}|width={{{width|400}}}|height={{{height|300}}}|zoom={{{zoom|10}}} }}, 
+"size": "0", "text": "{{#invoke:String|pos|{{{arc-text|abc}}}|5|ignore_errors=1}}",
+ "textAngle": {{#expr:{{{arc-angle|-45}}}+(4*{{{arc-gap|1}}}-{{#ifexpr:{{{arc-gap|1}}}<0|180|0}} ) }},
+"textAlign": "center", "baseline": "bottom",
+"textFontSize": {{{arc-text-size|10}}}, "textColor": "{{{arc-text-color|#554433}}}"
+}, }} {{#ifexpr:{{Str len|{{{arc-text|abc}}} }}>5|
+{ 
+{{OSM Location map/Getxy|lon={{#expr:{{{arc-lon|2}}}+(0-(sin({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (sin(({{{arc-angle|-45}}}+5*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))*{{{ellipse-factor|1}}} }}
+|lat={{#expr:{{{arc-lat|50}}}+(0-(cos({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (cos(({{{arc-angle|-45}}}+5*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))/{{{ellipse-factor|1}}} }}|lonbase={{{lonbase|2.002}}}|latbase={{{latbase|50.03}}}|width={{{width|400}}}|height={{{height|300}}}|zoom={{{zoom|10}}} }}, 
+"size": "0", "text": "{{#invoke:String|pos|{{{arc-text|abc}}}|6|ignore_errors=1}}",
+ "textAngle": {{#expr:{{{arc-angle|-45}}}+(5*{{{arc-gap|1}}}-{{#ifexpr:{{{arc-gap|1}}}<0|180|0}} ) }},
+"textAlign": "center", "baseline": "bottom",
+"textFontSize": {{{arc-text-size|10}}}, "textColor": "{{{arc-text-color|#554433}}}"
+}, }} {{#ifexpr:{{Str len|{{{arc-text|abc}}} }}>6|
+{ 
+{{OSM Location map/Getxy|lon={{#expr:{{{arc-lon|2}}}+(0-(sin({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (sin(({{{arc-angle|-45}}}+6*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))*{{{ellipse-factor|1}}} }}
+|lat={{#expr:{{{arc-lat|50}}}+(0-(cos({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (cos(({{{arc-angle|-45}}}+6*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))/{{{ellipse-factor|1}}} }}|lonbase={{{lonbase|2.002}}}|latbase={{{latbase|50.03}}}|width={{{width|400}}}|height={{{height|300}}}|zoom={{{zoom|10}}} }}, 
+"size": "0", "text": "{{#invoke:String|pos|{{{arc-text|abc}}}|7|ignore_errors=1}}",
+ "textAngle": {{#expr:{{{arc-angle|-45}}}+(6*{{{arc-gap|1}}}-{{#ifexpr:{{{arc-gap|1}}}<0|180|0}} ) }},
+"textAlign": "center", "baseline": "bottom", 
+"textFontSize": {{{arc-text-size|10}}}, "textColor": "{{{arc-text-color|#554433}}}"
+}, }}  {{#ifexpr:{{Str len|{{{arc-text|abc}}} }}>7|
+{ 
+{{OSM Location map/Getxy|lon={{#expr:{{{arc-lon|2}}}+(0-(sin({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (sin(({{{arc-angle|-45}}}+7*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))*{{{ellipse-factor|1}}} }}
+|lat={{#expr:{{{arc-lat|50}}}+(0-(cos({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (cos(({{{arc-angle|-45}}}+7*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))/{{{ellipse-factor|1}}} }}|lonbase={{{lonbase|2.002}}}|latbase={{{latbase|50.03}}}|width={{{width|400}}}|height={{{height|300}}}|zoom={{{zoom|10}}} }}, 
+"size": "0", "text": "{{#invoke:String|pos|{{{arc-text|abc}}}|8|ignore_errors=1}}",
+ "textAngle": {{#expr:{{{arc-angle|-45}}}+(7*{{{arc-gap|1}}}-{{#ifexpr:{{{arc-gap|1}}}<0|180|0}} ) }},
+"textAlign": "center", "baseline": "bottom", 
+"textFontSize": {{{arc-text-size|10}}}, "textColor": "{{{arc-text-color|#554433}}}"
+}, }} {{#ifexpr:{{Str len|{{{arc-text|abc}}} }}>8|
+{ 
+{{OSM Location map/Getxy|lon={{#expr:{{{arc-lon|2}}}+(0-(sin({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (sin(({{{arc-angle|-45}}}+8*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))*{{{ellipse-factor|1}}} }}
+|lat={{#expr:{{{arc-lat|50}}}+(0-(cos({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (cos(({{{arc-angle|-45}}}+8*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))/{{{ellipse-factor|1}}} }}|lonbase={{{lonbase|2.002}}}|latbase={{{latbase|50.03}}}|width={{{width|400}}}|height={{{height|300}}}|zoom={{{zoom|10}}} }}, 
+"size": "0", "text": "{{#invoke:String|pos|{{{arc-text|abc}}}|9|ignore_errors=1}}",
+ "textAngle": {{#expr:{{{arc-angle|-45}}}+(8*{{{arc-gap|1}}}-{{#ifexpr:{{{arc-gap|1}}}<0|180|0}} ) }},
+"textAlign": "center","baseline": "bottom", 
+"textFontSize": {{{arc-text-size|10}}}, "textColor": "{{{arc-text-color|#554433}}}"
+}, }} {{#ifexpr:{{Str len|{{{arc-text|abc}}} }}>9|
+{ 
+{{OSM Location map/Getxy|lon={{#expr:{{{arc-lon|2}}}+(0-(sin({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (sin(({{{arc-angle|-45}}}+9*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))*{{{ellipse-factor|1}}} }}
+|lat={{#expr:{{{arc-lat|50}}}+(0-(cos({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (cos(({{{arc-angle|-45}}}+9*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))/{{{ellipse-factor|1}}} }}|lonbase={{{lonbase|2.002}}}|latbase={{{latbase|50.03}}}|width={{{width|400}}}|height={{{height|300}}}|zoom={{{zoom|10}}} }}, 
+"size": "0", "text": "{{#invoke:String|pos|{{{arc-text|abc}}}|10|ignore_errors=1}}",
+ "textAngle": {{#expr:{{{arc-angle|-45}}}+(9*{{{arc-gap|1}}}-{{#ifexpr:{{{arc-gap|1}}}<0|180|0}} ) }},
+"textAlign": "center", "baseline": "bottom", 
+"textFontSize": {{{arc-text-size|10}}}, "textColor": "{{{arc-text-color|#554433}}}"
+}, }} {{#ifexpr:{{Str len|{{{arc-text|abc}}} }}>10|
+{ 
+{{OSM Location map/Getxy|lon={{#expr:{{{arc-lon|2}}}+(0-(sin({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (sin(({{{arc-angle|-45}}}+10*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))*{{{ellipse-factor|1}}} }}
+|lat={{#expr:{{{arc-lat|50}}}+(0-(cos({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (cos(({{{arc-angle|-45}}}+10*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))/{{{ellipse-factor|1}}} }}|lonbase={{{lonbase|2.002}}}|latbase={{{latbase|50.03}}}|width={{{width|400}}}|height={{{height|300}}}|zoom={{{zoom|10}}} }}, 
+"size": "0", "text": "{{#invoke:String|pos|{{{arc-text|abcdefghijklmnop}}}|11|ignore_errors=1}}",
+ "textAngle": {{#expr:{{{arc-angle|-45}}}+(10*{{{arc-gap|1}}}-{{#ifexpr:{{{arc-gap|1}}}<0|180|0}} ) }},
+"textAlign": "center", "baseline": "bottom", 
+"textFontSize": {{{arc-text-size|10}}}, "textColor": "{{{arc-text-color|#554433}}}"
+}, }} {{#ifexpr:{{Str len|{{{arc-text|}}} }}>11|
+{ 
+{{OSM Location map/Getxy|lon={{#expr:{{{arc-lon|2}}}+(0-(sin({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (sin(({{{arc-angle|-45}}}+11*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))*{{{ellipse-factor|1}}} }}
+|lat={{#expr:{{{arc-lat|50}}}+(0-(cos({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (cos(({{{arc-angle|-45}}}+11*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))/{{{ellipse-factor|1}}} }}|lonbase={{{lonbase|2.002}}}|latbase={{{latbase|50.03}}}|width={{{width|400}}}|height={{{height|300}}}|zoom={{{zoom|10}}} }}, 
+"size": "0", "text": "{{#invoke:String|pos|{{{arc-text|}}}|12|ignore_errors=1}}",
+ "textAngle": {{#expr:{{{arc-angle|-45}}}+(11*{{{arc-gap|1}}}-{{#ifexpr:{{{arc-gap|1}}}<0|180|0}} ) }},
+"textAlign": "center", "baseline": "bottom", 
+"textFontSize": {{{arc-text-size|10}}}, "textColor": "{{{arc-text-color|#554433}}}"
+}, }} {{#ifexpr:{{Str len|{{{arc-text|}}} }}>12|
+{ 
+{{OSM Location map/Getxy|lon={{#expr:{{{arc-lon|2}}}+(0-(sin({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (sin(({{{arc-angle|-45}}}+12*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))*{{{ellipse-factor|1}}} }}
+|lat={{#expr:{{{arc-lat|50}}}+(0-(cos({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (cos(({{{arc-angle|-45}}}+12*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))/{{{ellipse-factor|1}}} }}|lonbase={{{lonbase|2.002}}}|latbase={{{latbase|50.03}}}|width={{{width|400}}}|height={{{height|300}}}|zoom={{{zoom|10}}} }}, 
+"size": "0", "text": "{{#invoke:String|pos|{{{arc-text|}}}|13|ignore_errors=1}}",
+ "textAngle": {{#expr:{{{arc-angle|-45}}}+(12*{{{arc-gap|1}}}-{{#ifexpr:{{{arc-gap|1}}}<0|180|0}} ) }},
+"textAlign": "center", "baseline": "bottom", 
+"textFontSize": {{{arc-text-size|10}}}, "textColor": "{{{arc-text-color|#554433}}}"
+}, }} {{#ifexpr:{{Str len|{{{arc-text|}}} }}>13|
+{ 
+{{OSM Location map/Getxy|lon={{#expr:{{{arc-lon|2}}}+(0-(sin({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (sin(({{{arc-angle|-45}}}+13*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))*{{{ellipse-factor|1}}} }}
+|lat={{#expr:{{{arc-lat|50}}}+(0-(cos({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (cos(({{{arc-angle|-45}}}+13*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))/{{{ellipse-factor|1}}} }}|lonbase={{{lonbase|2.002}}}|latbase={{{latbase|50.03}}}|width={{{width|400}}}|height={{{height|300}}}|zoom={{{zoom|10}}} }}, 
+"size": "0", "text": "{{#invoke:String|pos|{{{arc-text|}}}|14|ignore_errors=1}}",
+ "textAngle": {{#expr:{{{arc-angle|-45}}}+(13*{{{arc-gap|1}}}-{{#ifexpr:{{{arc-gap|1}}}<0|180|0}} ) }},
+"textAlign": "center", "baseline": "bottom", 
+"textFontSize": {{{arc-text-size|10}}}, "textColor": "{{{arc-text-color|#554433}}}"
+}, }} {{#ifexpr:{{Str len|{{{arc-text|}}} }}>14|
+{ 
+{{OSM Location map/Getxy|lon={{#expr:{{{arc-lon|2}}}+(0-(sin({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (sin(({{{arc-angle|-45}}}+14*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))*{{{ellipse-factor|1}}} }}
+|lat={{#expr:{{{arc-lat|50}}}+(0-(cos({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (cos(({{{arc-angle|-45}}}+14*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))/{{{ellipse-factor|1}}} }}|lonbase={{{lonbase|2.002}}}|latbase={{{latbase|50.03}}}|width={{{width|400}}}|height={{{height|300}}}|zoom={{{zoom|10}}} }}, 
+"size": "0", "text": "{{#invoke:String|pos|{{{arc-text|}}}|15|ignore_errors=1}}",
+ "textAngle": {{#expr:{{{arc-angle|-45}}}+(14*{{{arc-gap|1}}}-{{#ifexpr:{{{arc-gap|1}}}<0|180|0}} ) }},
+"textAlign": "center", "baseline": "bottom", 
+"textFontSize": {{{arc-text-size|10}}}, "textColor": "{{{arc-text-color|#554433}}}"
+}, }} {{#ifexpr:{{Str len|{{{arc-text|}}} }}>15|
+{ 
+{{OSM Location map/Getxy|lon={{#expr:{{{arc-lon|2}}}+(0-(sin({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (sin(({{{arc-angle|-45}}}+15*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))*{{{ellipse-factor|1}}} }}
+|lat={{#expr:{{{arc-lat|50}}}+(0-(cos({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (cos(({{{arc-angle|-45}}}+15*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))/{{{ellipse-factor|1}}} }}|lonbase={{{lonbase|2.002}}}|latbase={{{latbase|50.03}}}|width={{{width|400}}}|height={{{height|300}}}|zoom={{{zoom|10}}} }}, 
+"size": "0", "text": "{{#invoke:String|pos|{{{arc-text|}}}|16|ignore_errors=1}}",
+ "textAngle": {{#expr:{{{arc-angle|-45}}}+(15*{{{arc-gap|1}}}-{{#ifexpr:{{{arc-gap|1}}}<0|180|0}} ) }},
+"textAlign": "center", "baseline": "bottom", 
+"textFontSize": {{{arc-text-size|10}}}, "textColor": "{{{arc-text-color|#554433}}}"
+}, }} {{#ifexpr:{{Str len|{{{arc-text|}}} }}>16|
+{ 
+{{OSM Location map/Getxy|lon={{#expr:{{{arc-lon|2}}}+(0-(sin({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (sin(({{{arc-angle|-45}}}+16*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))*{{{ellipse-factor|1}}} }}
+|lat={{#expr:{{{arc-lat|50}}}+(0-(cos({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (cos(({{{arc-angle|-45}}}+16*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))/{{{ellipse-factor|1}}} }}|lonbase={{{lonbase|2.002}}}|latbase={{{latbase|50.03}}}|width={{{width|400}}}|height={{{height|300}}}|zoom={{{zoom|10}}} }}, 
+"size": "0", "text": "{{#invoke:String|pos|{{{arc-text|}}}|17|ignore_errors=1}}",
+ "textAngle": {{#expr:{{{arc-angle|-45}}}+(16*{{{arc-gap|1}}}-{{#ifexpr:{{{arc-gap|1}}}<0|180|0}} ) }},
+"textAlign": "center", "baseline": "bottom", 
+"textFontSize": {{{arc-text-size|10}}}, "textColor": "{{{arc-text-color|#554433}}}"
+}, }} {{#ifexpr:{{Str len|{{{arc-text|}}} }}>17|
+{ 
+{{OSM Location map/Getxy|lon={{#expr:{{{arc-lon|2}}}+(0-(sin({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (sin(({{{arc-angle|-45}}}+17*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))*{{{ellipse-factor|1}}} }}
+|lat={{#expr:{{{arc-lat|50}}}+(0-(cos({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (cos(({{{arc-angle|-45}}}+17*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))/{{{ellipse-factor|1}}} }}|lonbase={{{lonbase|2.002}}}|latbase={{{latbase|50.03}}}|width={{{width|400}}}|height={{{height|300}}}|zoom={{{zoom|10}}} }}, 
+"size": "0", "text": "{{#invoke:String|pos|{{{arc-text|}}}|18|ignore_errors=1}}",
+ "textAngle": {{#expr:{{{arc-angle|-45}}}+(17*{{{arc-gap|1}}}-{{#ifexpr:{{{arc-gap|1}}}<0|180|0}} ) }},
+"textAlign": "center", "baseline": "bottom", 
+"textFontSize": {{{arc-text-size|10}}}, "textColor": "{{{arc-text-color|#554433}}}"
+}, }} {{#ifexpr:{{Str len|{{{arc-text|}}} }}>18|
+{ 
+{{OSM Location map/Getxy|lon={{#expr:{{{arc-lon|2}}}+(0-(sin({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (sin(({{{arc-angle|-45}}}+18*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))*{{{ellipse-factor|1}}} }}
+|lat={{#expr:{{{arc-lat|50}}}+(0-(cos({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (cos(({{{arc-angle|-45}}}+18*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))/{{{ellipse-factor|1}}} }}|lonbase={{{lonbase|2.002}}}|latbase={{{latbase|50.03}}}|width={{{width|400}}}|height={{{height|300}}}|zoom={{{zoom|10}}} }}, 
+"size": "0", "text": "{{#invoke:String|pos|{{{arc-text|}}}|19|ignore_errors=1}}",
+ "textAngle": {{#expr:{{{arc-angle|-45}}}+(18*{{{arc-gap|1}}}-{{#ifexpr:{{{arc-gap|1}}}<0|180|0}} ) }},
+"textAlign": "center", "baseline": "bottom", 
+"textFontSize": {{{arc-text-size|10}}}, "textColor": "{{{arc-text-color|#554433}}}"
+}, }} {{#ifexpr:{{Str len|{{{arc-text|}}} }}>19|
+{ 
+{{OSM Location map/Getxy|lon={{#expr:{{{arc-lon|2}}}+(0-(sin({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (sin(({{{arc-angle|-45}}}+19*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))*{{{ellipse-factor|1}}} }}
+|lat={{#expr:{{{arc-lat|50}}}+(0-(cos({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (cos(({{{arc-angle|-45}}}+19*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))/{{{ellipse-factor|1}}} }}|lonbase={{{lonbase|2.002}}}|latbase={{{latbase|50.03}}}|width={{{width|400}}}|height={{{height|300}}}|zoom={{{zoom|10}}} }}, 
+"size": "0", "text": "{{#invoke:String|pos|{{{arc-text|}}}|20|ignore_errors=1}}",
+ "textAngle": {{#expr:{{{arc-angle|-45}}}+(19*{{{arc-gap|1}}}-{{#ifexpr:{{{arc-gap|1}}}<0|180|0}} ) }},
+"textAlign": "center", "baseline": "bottom", 
+"textFontSize": {{{arc-text-size|10}}}, "textColor": "{{{arc-text-color|#554433}}}"
+}, }} {{#ifexpr:{{Str len|{{{arc-text|}}} }}>20|
+{ 
+{{OSM Location map/Getxy|lon={{#expr:{{{arc-lon|2}}}+(0-(sin({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (sin(({{{arc-angle|-45}}}+20*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))*{{{ellipse-factor|1}}} }}
+|lat={{#expr:{{{arc-lat|50}}}+(0-(cos({{{arc-angle|-45}}}*pi/180)*{{{arc-radius|0.5}}}) + (cos(({{{arc-angle|-45}}}+20*{{{arc-gap|1}}})*pi/180)*{{{arc-radius|0.5}}}))/{{{ellipse-factor|1}}} }}|lonbase={{{lonbase|2.002}}}|latbase={{{latbase|50.03}}}|width={{{width|400}}}|height={{{height|300}}}|zoom={{{zoom|10}}} }}, 
+"size": "0", "text": "{{#invoke:String|pos|{{{arc-text|}}}|21|ignore_errors=1}}",
+ "textAngle": {{#expr:{{{arc-angle|-45}}}+(20*{{{arc-gap|1}}}-{{#ifexpr:{{{arc-gap|1}}}<0|180|0}} ) }},
+"textAlign": "center", "baseline": "bottom", 
+"textFontSize": {{{arc-text-size|10}}}, "textColor": "{{{arc-text-color|#554433}}}"
+}, }}</includeonly><noinclude>
+{{documentation}}
+</noinclude>
