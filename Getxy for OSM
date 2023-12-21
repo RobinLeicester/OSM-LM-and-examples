@@ -1,0 +1,38 @@
+"{{{1|x}}}": {{#expr:{{{width|200}}}/2 + (
+( ({{{lon|175.70}}}*(PI/180)*6378137) - ({{{lonbase|175.70}}}*(PI/180)* 6378137) ) 
+/ (156543.03*COS({{{latbase|-40.33}}}/180)/(2^{{{zoom|13}}} ) )
+)*(1-(0.11*({{{latbase|0}}}/180))) }}, "{{{2|y}}}": {{#expr:{{{height|100}}}/2 + (
+( (LN(TAN({{{latbase|-40.33}}}*(PI/180)/2+PI/4))*6378137)
+- (LN(TAN({{{lat|-40.33}}}*(PI/180)/2+PI/4))*6378137) )
+/ (156543.03*COS({{{latbase|-40.33}}}/180)/(2^{{{zoom|13}}} ) )
+)*(1-(0.11*({{{latbase|0}}}/180)))  }}{{#if:{{{latlon|}}}|, "lon":{{{lon|}}}, "lat":{{{lat|}}}|}}<!--
+template:getxy
+
+Takes 7 essential parameters:
+lat, lon, latbase, lonbase, width, height, zoom
+plus two optional un-named ones, which will replace "x" and "y" with "param1" and "param2" 
+
+width and height are the size, in pixels, of the map, which will be centerd around lonbase,latbase
+
+converts lon and lon-base to meter-offsets from coord(0,0), 
+subtracts lonbase from lon,
+uses zoom and latbase to scale the resulting meter-offset to pixels, and adds it to width.
+and 
+converts lat and lat-base to meter-offsets from coord(0,0), 
+subtracts lat from latbase,
+scales the resulting meter-offset to pixels, adds it to height.
+
+I have no idea why it needs the correction factor at higher latitudes. It only really affects marks near the outsides of the frame.
+
+generates the "x": and "y" parameters for Vega5 values.
+
+Python code
+print('"x"=',width+(((math.radians(lon1) * 6378137)-
+      (math.radians(lonbase) * 6378137))/
+      (156543.03*math.cos(latbase/180)/(2**zoom))),' y=',height+((
+      (math.log(math.tan(math.pi / 4 + math.radians(latbase) / 2)) * 6378137)-
+      (math.log(math.tan(math.pi / 4 + math.radians(lat1) / 2)) * 6378137))/
+      (156543.03*math.cos(latbase/180)/(2**zoom)))
+     ) 
+sources: https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames and https://wiki.openstreetmap.org/wiki/Mercator
+-->
