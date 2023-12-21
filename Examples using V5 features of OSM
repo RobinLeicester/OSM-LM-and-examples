@@ -1,0 +1,404 @@
+====Using the new dashed-line feature to mark out a distance====
+{{OSM Location map
+| coord={{coord|54.6|-3.1}}
+| zoom=5
+| width = 230
+| height = 420
+|scalemark =6
+
+| mark-coord1={{coord|50.06811|-5.71526}}
+| label1 = Land's End
+| label-pos1 = bottom
+| mark-title1=Land's End
+| mark-image1=Signpost at Land's End.JPG
+| mark-description1=The south-western tip of Cornwall
+
+| mark-coord2={{coord|58.644115|-3.069552}}
+| label2 = John o' Groats
+| label-pos2 = right
+| mark-title2=John o' Groats
+| mark-image2=John o' Groats.JPG
+| mark-description2=The north-easterly tip of Scotland
+
+|mark-coord3={{coord|54.6|-4.305}}
+|mark-size3=350
+|shape3=stroke
+|shape-angle3=-80.2
+|label-angle3=-80.2
+|label-pos3=center
+|ldy3=-14| ldx3=90
+|label3=Direct line distance^^= 603 miles (970 km)
+|shape-outline3=dark grey,5,40,[8,4]
+}}
+<pre>
+|mark-coord3={{coord|54.6|-4.305}}
+|mark-size3=350
+|shape3=stroke
+|shape-angle3=-80.2
+|label-angle3=-80.2
+|label-pos3=center
+|ldy3=-14| ldx3=90
+|label3=Direct line distance^^= 603 miles (970 km)
+|shape-outline3=dark grey,5,40,[8,4]
+</pre>
+{{clear}}
+-------
+====Using the new photo-panel feature to highlight a landmark====
+{{OSM Location map
+|   coord = {{coord|-35.29605|149.122}}
+|    zoom = 13
+|    grid = off
+|   width = 400
+|  height = 220
+|scalemark= 15
+
+|     arc-coordA = {{coord|-35.296|149.098}}
+|      arc-textA =  Lake Burley Griffin
+| arc-text-sizeA = 11
+|arc-text-colorA = soft blue
+|     arc-angleA = -10
+|       arc-gapA = 0.75
+|    arc-radiusA = 1.2
+
+| mark-coord2 = {{coord|-35.2985|149.1417}}
+| label-pos2=left, photo-panel, 29, 83
+| label-color2=hard blue
+| ldx2=26| ldy2=-93
+| label2=National ^Carillon
+| mark-title2=National Carillon
+| mark-image2=National Carillon, Canberra ACT.jpg
+}}
+<pre>| mark-coord2 = {{coord|-35.2985|149.1417}}  <!--nb panel-height is always 46 -->
+| label-pos2=left, photo-panel, 29, 83      <!-- pos, p-p, photo-width, panel-width-->
+| label-color2=hard blue       <!-- in photo-panel this is also outline/line color -->
+| ldx2=26| ldy2=-93              <!-- sets relative position of panel to it's mark -->
+| label2=National ^Carillon
+| mark-title2=National Carillon
+| mark-image2=National Carillon, Canberra ACT.jpg
+</pre>
+
+{{clear}}
+--------
+
+====Using numbered dots, including the new lines features to sort out crowded dots====
+{{OSM Location map
+| coord={{coord|48|13}}
+|  zoom=5
+|   float=right
+|    nolabels=1
+|     width=305
+|     height=160
+| title=[[War of the Third Coalition]]:<br>Austria
+| caption={{legend|black|current battle}}{{legend|maroon|Napoleon in command}}{{legend|#6495ED|Napoleon not in command}}
+
+| shapeD=n-circle
+| mark-sizeD=15
+| shape-colorD=hard blue
+| shape-outlineD=white
+| label-colorD=hard blue
+| label-sizeD=12
+| label-posD=left
+| label-offset-xD=0
+| label-offset-yD=0
+
+| label1= 
+| label-pos1=top, n-line
+| ldx1=-5|ldy1=-9
+| mark-coord1={{coord|48.7|10.80}}
+| mark-title1=[[Battle of Donauwörth|Donauwörth]] on 7 October 1805
+
+| label2=
+| mark-coord2={{coord|48.56|10.68}}
+| mark-title2=[[Battle of Wertingen]] on 8 October 1805
+
+| label3=
+| label-pos3=top, n-line
+| ldx3=-7|ldy3=-11
+| mark-coord3={{coord|48.45|10.27}}
+| mark-title3=[[Battle of Günzburg]] on 9 October 1805
+
+| label4=
+| label-pos4=left, n-line
+|ldx4=-17|ldy4=-9
+| mark-coord4={{coord|48.4|9.98}}
+| mark-title4=[[Battle of Haslach-Jungingen]] on 11 October 1805
+
+| label5=
+| mark-coord5={{coord|47.99|10.18}}
+| mark-title5=[[Battle of Memmingen]] on 14 October 1805
+
+| label6=
+| label-pos6=left, n-line
+|ldx6=-13|ldy6=-19
+| mark-coord6={{coord|48.45|10.1}}
+| mark-title6=[[Battle of Elchingen]] on 14 October 1805
+
+| label7=Ulm
+| label-pos7=left, with-line
+|label-offset-x7=-18| ldy7=4
+| mark-coord7={{coord|48.38|9.98}}
+| mark-title7=[[Battle of Ulm]] from 15 to 20 October 1805
+| label-color7=dark red
+| shape-color7=dark red
+
+| label8=
+| mark-coord8={{coord|48.09|13.88}}
+| mark-title8=[[Battle of Lambach]] on 31 October 1805
+
+| label9=
+| mark-coord9={{coord|48.12|14.87}}
+| mark-title9=[[Battle of Amstetten]] on 5 November 1805
+
+| label10=
+| mark-coord10={{coord|47.77|15.32}}
+| mark-title10=[[Battle of Mariazell]] on 8 November 1805
+
+| label11=
+| mark-coord11={{coord|48.39|15.52}}
+| mark-title11=[[Battle of Dürenstein]] on 11 November 1805
+
+| label12=
+| mark-coord12={{coord|48.61|16.02}}
+| mark-title12=[[Battle of Schöngrabern]] on 16 November 1805
+
+| label13=
+| label-pos13=right, n-line
+| ldx13=6| ldy13=-8
+| mark-coord13={{coord|49.28|17}}
+| mark-title13=[[Battle of Wischau]] on 25 November 1805
+
+| label14=Austerlitz
+| mark-coord14={{coord|49.13|16.77}}
+| mark-title14=Battle of Austerlitz on 2 December 1805
+| label-color14=black
+| shape-color14=black
+|label-pos14=left,with-line
+|ldx14=-17| ldy14=-3
+}}
+<pre>
+| label6=
+| label-pos6=left, n-line
+|ldx6=-13|ldy6=-19
+| mark-coord6={{coord|48.45|10.1}}
+| mark-title6=[[Battle of Elchingen]] on 14 October 1805
+</pre>
+{{clear}}
+--------------
+
+====A demonstration of some of the the various shapes and features available in the upgraded template====
+{{OSM Location map
+|coord = {{coord|44.459|-66.0}}
+|zoom=8| scalemark = 8
+|caption=Example shapes available using OSM Location Map
+|mark-coord= {{coord|44.46|-66.75}}| shape=panel| shape-color=pale brown| shape-outline=hard-brown,1
+|label-size=10| label-color=dark brown
+|label=Built in Shape examples^^^^^^^^Each can be assigned ^mark-size=  shape-color=, ^shape-outline=, shape-angle= ^plus a set of label parameters.
+| label-pos=left|mark-size=270,145,3| ldy=7
+|shape1=circle|mark-size1=15| shape-color1=hard blue| shape-outline1=dark grey, 0.4, 70
+|label1=circle|label-pos1=right| mark-coord1={{coord|44.845|-67.06}}
+|mark-coord2 = {{coord|44.845|-66.7}}|shape2=square|label2=square
+|mark-coord3 = {{coord|44.775|-67.06}}|shape3=diamond|label3=diamond
+|mark-coord4 = {{coord|44.775|-66.7}}|shape4=triangle|label4=triangle
+|mark-coord5 = {{coord|44.705|-67.06}}|shape5=cross|label5=cross
+|mark-coord6 = {{coord|44.705|-66.7}}|shape6=arrow|label6=arrow
+|mark-coord7 = {{coord|44.65|-66.75}}|shape7=stroke|mark-size7=135|label7=stroke|label-pos7=center| ldy7=9
+| shape-outline7=dark grey, 1, 70,[12,4]
+|mark-coord8 = {{coord|44.365|-66.75}}|shape8=stroke|mark-size8=135|label8=Library shapes can have variants
+|label-pos8=center| ldy8=9| label-size8=9| |label-color8=dark brown| shape-outline8=dark grey, 0.5
+|mark-coord9 = {{coord|44.25|-67.06}}|shape9=box|mark9=rounded2|label9=shape=box^mark=rounded2|ldy9=-8|ldx9=5
+|mark-coord10 = {{coord|44.13|-67.06}}|shape10=ring|mark10=circle1|label10=shape=ring^mark=circle2|ldy10=-8|ldx10=5
+|mark-coord11 = {{coord|44.00|-67.06}}|shape11=star|mark11=8star4|label11=shape=star^mark=8star4|ldy11=-8|ldx11=5
+
+|mark-coord12= {{coord|44.46|-65.7}}| shape12=panel| shape-color12=pale brown| shape-outline12=hard-brown,1
+|label-size12=10| label-color12=dark brown
+|label12=Library shapes can set a mark-size ^with both height and width values
+| label-pos12=left|mark-size12=270,165,3| ldy12=2
+|mark-coord13 = {{coord|44.825|-66.00}}|shape13=ellipse|mark-size13=12,30| label13=shape=ellipse ^mark-size=12,30|ldy13=-8|ldx13=5
+|mark-coord14 = {{coord|44.725|-66.00}}|shape14=box|mark-size14=12,30| label14=shape=box^mark-size=12,30|ldy14=-8|ldx14=5
+|mark-coord15 = {{coord|44.56|-65.7}}|shape15=panel|mark-size15=35,150,2| label15=panel: mark-size=35,150^ and text is put inside | shape-color15=pale blue| shape-outline15=hard blue,2| label-pos15=top
+|mark-coord16 = {{coord|44.40|-66.07}}|mark-size16=12|shape16=image|mark16=Red pog.svg| label16=default is shape=image ^mark=Red pog.svg|ldy16=-7
+|mark-coord17 = {{coord|44.311|-66.07}}|mark-size17=12,17|shape17=n-ring|mark17=circle0| label17=n-shape auto-numbering |ldx17=3|shape-outline17=white
+|mark-coord18 = {{coord|44.24|-66.04}}|mark-size18=12,25|shape18=n-box|mark18=rounded1| label18= or use numbered=|ldx18=3|shape-outline18=black,0.6,100|shape-color18=white|numbered18=CT15
+|mark-coord19 = {{coord|44.02|-64.84}}|mark-size19=10|shape19=image|mark19=Red pog.svg| ldx19=-73| ldy19=-35|label-pos19= left,with-line|label19= label-pos adds line-drawing ^features by using 'with-line', ^'line-next', 'n-line' or ^to a 'photo-panel'
+|mark-coord20 = {{coord|44.90|-64.82}}|mark-size20=12|shape20=image|mark20=Red pog.svg| label20=Photo-^panel
+|label-pos20=right,photo-panel,23,68|mark-image20=Eiffel Tower from north Avenue de New York, Aug 2010.jpg|ldx20=-65|ldy20=34
+}}
+{|class="wikitable"
+|-
+|symbols||Full list of built in shapes (symbols): shape = circle, square, cross, diamond, triangle-up, triangle-down, triangle-right, triangle-left, stroke, arrow, wedge, triangle.
+|-
+| ||Current list of library shapes:
+|-
+|stars||shape=star, mark=NstarD where N= number of points (5,6,7,8) and D = depth of point (1,2,3,4). This example shows '8star4'.
+|-
+|rings||shape=ring, mark=circle0, circle1, circle2. Adds additional rings around an inner circle
+
+shape=ring, mark=ring0, ring1, ring2. Similar to circle1 etc but the rings are shapes rather than just outlines.
+|-
+|ellipse||shape=ellipse. Actually just another way to draw a circle, but can use mark-size=H,W to set height,width as comma-separated pixel values.
+|-
+|boxes||shape=box, mark=square, square1, square2. Adds additional square outlines aound an inner box
+
+shape=box, mark=rounded1, rounded2. These makes boxes with rounded corners. Like all library shapes they can be rotated and given height,width.
+|-
+|triangles||shape=triad, mark=up, down, left, right, up1, down1, left1, right1. Triangle shapes, which are without or with an additional outline.
+
+|-
+|lines||shape=line, mark=up, down, left, right, horizontal, vertical. Draws a line of given length (mark-size) either moving out from the start-point or centered vertically/horizontally.
+
+shape=line, mark=up2, down2, left2, right2, horizontal2, vertical2. Two parallel lines. mark-size=H,W sets the gap as well as the length. Note that H is the gap with horizontal lines, and W the length, whereas for vertical lines it is the other way round. The lines are in effect the sides of a box drawn to size H,W
+|}
+All shapes can be assigned shape-color (with optional opacity%), shape-angle, and shape-outline. shape-color=red,1 would set the opacity to invisible. shape-color=red,100 is a solid fill. Four attributes can be set for the outline: color, width, opacity% and dash attribute. Each is comma-separated and optional but must be included in that order. The dash attribute is put in square brackets, and can assign dash-length,gap-length pairs of whatever complexity is desirable. eg: shape-outline=soft blue,1,100,[9,4] (Note - for most solid-fill shapes, the dashes will probably be an unwise choice).
+
+Each shape can be accompanied by a label. This is text which can be assigned label-color, label-size, label-pos, label-offset-x and label-offset-y. These last 2 can be abreviated to ldx= and ldy=. They move the text the assigned distance away from the shape (minus values for left/up, plus for right/down). 
+
+label-pos can be left, right, top, bottom or center. There are optional items to draw a line from the label to the shape, or from the shape to the next shape. eg label-pos=left,with-line or label-pos=top,line-next. n-line will also add any number that would otherwise be on the shape itself via n-shape or numbered=. n-line and with-line use the ldx and ldy values to move the label away from it's shape and then draw a line to connect them. This is useful for getting the label away from a congested part of the map.
+
+photo-panel creates a fixed-height panel (48px) to display both the label text and an optional photo, with a connecting line to its mark/shape. It requires two further comma-seperated parameters: the width of the photo and the width of the panel. eg label-pos=left,photo-panel,30,110. The position of the centre of the panel is set by ldx= and ldy= which give pixel offsets from the original mark/shape. The photo-panel connecting line uses the color assigned to the label, to create a unified look.
+
+{{clear}}
+--------------
+====Using text features to differentiate and illustrate significant map features====
+{{OSM Location map
+| width=650| height=260
+| coord = {{coord|44.091|-77.18}}              
+| zoom =10               <!--(1=whole world, 18=a street)-->
+| caption = Map of the Bay of Quinte, an arm of Lake Ontario, that runs for some 80 km between Prince Edward County and the 'mainland' of Hastings County, in south-east Ontario.
+| minimap=file
+| mini-file = Ontario Locator Map.svg
+| mini-width = 79
+| mini-height = 77
+| minipog-x = 68| minipog-y = 56| scalemark = 76
+| map-data=
+| label-colorD=hard blue
+| mark-coord = {{coord|44.0083|-77.1389}} | label=| label-pos=right| mark-size=0| label-size=12|label-color=hard grey| mark-title=[[Picton, Ontario]]| mark-image=
+| label1=Bloomfield| mark-coord1={{coord|43.9856|-77.2336}}|label-color1=hard grey|label-size1=11| mark-size1=6| label-pos1=right| mark-title1=[[Bloomfield, Ontario]]
+| label2= Wellington| mark-coord2={{coord|43.952|-77.3505}}| mark-title2=[[Wellington, Ontario]] 
+| label3=Ameliasburgh| mark-coord3={{coord|44.042|-77.38}}| label-color3=hard grey| label-pos3=left| mark-title3=[[Ameliasburgh Township, Ontario]]
+| mark-coord4= {{coord|44.198|-77.586}}| label4=River Trent| label-angle4=75|label-size4=9| mark-size4=0|mark-title4=River Trent
+| mark-coord5= {{coord|44.06|-76.974}}| label5=Adolphus Reach| label-angle5=-39|label-size5=9| mark-size5=0|mark-title5=Adolphus Reach
+| label6=Hillier| mark-coord6={{coord|43.97244|-77.453245}}| label-color6=hard grey| mark-title6=[[Hillier, Ontario]]
+| mark-coord9 = {{coord|44.0895|-77.0793}}| label9=Long Reach| label-angle9=-79|label-size9=9| mark-size9=0|mark-title9=Long Reach
+| mark-coord10 = {{coord|44.0093|-77.1389}} | label10=Picton Bay| label-pos10=right| mark-size10=0| label-size10=9| label-angle10=-59| label-offset-x10=9| label-offset-y10=-5| mark-title10=Picton Bay
+| mark-coord12= {{coord|44.142|-77.299}}| label12=B a y   o f   Q u i n t e| label-angle12=-9|label-color12=dark blue|label-size12=12| mark-size12=0|mark-title12=Bay of Quinte
+| mark-coord13= {{coord|44.149|-76.960}}| label13=Hay Bay| label-angle13=-33|label-size13=9| mark-size13=0|mark-title13=Hay Bay
+| arc-coordA= {{coord|44.0062|-76.892}}| arc-textA=LAKE ONTARIO| arc-angleA=-50|arc-gapA=2|arc-radiusA=0.8| arc-text-colorA=soft blue| arc-text-sizeA=10
+}}
+<pre>
+| mark-coord12= {{coord|44.142|-77.299}}
+| label12=B a y   o f   Q u i n t e
+| label-angle12=-9
+| label-color12=dark blue
+| label-size12=12
+| mark-size12=0
+| mark-title12=Bay of Quinte
+</pre>
+{{clear}}
+--------------
+====Using new shapes and line features to add items relevant to the article====
+{{OSM Location map
+| coord = {{coord|51.7838|-3.6562}}
+| zoom =14     | scalemark = 20
+| width = 350  | height = 480
+| caption =  Map of the area around [https://en.wikipedia.org/wiki/Banwen Banwen], South Wales, showing the Roman roads and earthworks close to the border between [[Neath Port Talbot]] and [[Powys]].<ref>{{cite book|title=Glamorgan Inventory, Vol 1, Part 2: The Iron Age and Roman Occupation| year=1976| author=Royal Commission  on the Ancient and Historical Monuments of Wales | url=https://shop.rcahmw.gov.uk/products/glamorgan-inventory-vol-1-part-2-the-iron-age-and-roman-occupation-ebook?variant=29576736997441| page=100}}</ref>
+|grid=on
+
+| map-data=Q748078  <!-- adds Neath Port Talbert boundary to interactive map -->
+| map-data-text=Neath Port Talbot
+| map-data-width=3
+| map-data-color=#CC3333
+
+| shape-colorD = hard red
+| shapeD=image
+| markD=Red pog.svg
+| mark-sizeD  = 12
+| label-sizeD  = 11
+| label-colorD = hard grey
+| label-posD   = bottom
+| label-offset-xD= 0
+| label-offset-yD=0
+
+| mark-coord11 = {{coord|51.78365|-3.6553}} 
+| shape11=box
+| mark11=rounded2
+| mark-size11=17
+|shape-outline11=hard grey,1,70
+| shape-color11=white
+| shape-angle11=-9
+| label11 = Roman Fort
+| ldx11=-3
+| mark-title11 = Roman Auxiliary Fort
+| label-pos11=left
+| label-angle11=0
+| label-size11 = 12
+
+| mark-coord2 = {{coord|51.7802|-3.6515}} 
+|shape2=box | mark2=rounded1
+|mark-size2=62, 44
+|label-pos2=center
+|shape-outline2=hard grey,2,40,[12,5]
+|shape-opacity2=1
+|shape-angle2=-20
+|label2 = Roman^Marching^Camp
+|ldy2=-15
+| mark-title2 = Roman Marching Camp
+|label-angle2=-20
+
+| mark-coord3 = {{coord|51.7811|-3.6425}} 
+| label3 = Blast ^Furnaces
+| mark-size3=10
+|label-angle3=0
+| mark-title3 = Blast Furnaces at Banwen
+| label-offset-x3= -10
+
+| mark-coord4 = {{coord|51.7943|-3.66327}} 
+| label4      = Henrhyd |labela4=Waterfall
+| mark-size4=10
+|label-pos4=top
+| mark-title4 = Henrhyd Waterfall
+
+| mark-coord5 = {{coord|51.77603|-3.65821}} 
+| label5      = St Patrick |labela5=Memorial Stone
+| mark-size5=10
+|label-pos5=right
+| mark-title5 = Memorial Stone to St Patrick
+
+| mark-coord9 = {{coord|51.7734|-3.6590}}
+| label9     = Roman Road
+| mark-title9 = none
+| mark-size9=0
+| label-angle9=-78
+
+| mark-coord6 = {{coord|51.7861|-3.6466}} 
+| label6      = Roman road
+| label-pos6=center
+| ldy6=-7
+| shape6=stroke
+| mark-title6 = none
+| mark-size6=155
+| shape-outline6=hard grey,2,60,[9,3]
+| shape-angle6=-32
+| label-angle6=-32
+
+| mark-coord7 = {{coord|51.7838|-3.6534}} 
+| shape7=stroke| mark-size7=30
+| shape-outline7=hard grey,2,60,[9,3]
+| outline-opacity7=0
+| mark-title7 = none
+| shape-angle7=-9
+}}
+<pre>
+| mark-coord1 = {{coord|51.78365|-3.6553}} 
+| shape1=box
+| mark1 =rounded2
+| mark-size1=17
+| shape-outline1=hard grey,1,70
+| shape-color1=white
+| shape-angle1=-9
+| label1 = Roman Fort
+| ldx1=-3
+| mark-title1 = Roman Auxiliary Fort
+| label-pos1=left
+| label-angle1=0
+| label-size1 = 12
+</pre>
