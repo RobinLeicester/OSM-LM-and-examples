@@ -1,0 +1,1828 @@
+import sys
+import requests
+import re
+from bs4 import BeautifulSoup
+from datetime import date
+from datetime import timedelta
+import datetime
+import dateutil.parser
+import json
+from operator import itemgetter, attrgetter
+import cairo
+import random
+import math
+import copy
+import csv
+import os
+import os.path
+
+primes = (2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,
+        73,79,83,89,97,101,103,107,109,113,127,131,137,139,149,
+        151,157,163,167,173,179,181,191,193,197,199,211,223,227,
+        229,233,239,241,251,257,263,269,271,277,281,283,293,307,
+        311,313,317,331,337,347,349,353,359,367,373,379,383,389,
+        397,401,409,419,421,431,433,439,443,449,457,461,463,467,
+        479,487,491,499,503,509,521,523,541,547,557,563,569,571,
+        577,587,593,599,601,607,613,617,619,631,641,643,647,653,
+        659,661,673,677,683,691,701,709,719,727,733,739,743,751,
+        757,761,769,773,787,797,809,811,821,823,827,829,839,853,
+        857,859,863,877,881,883,887,907,911,919,929,937,941,947,
+        953,967,971,977,983,991,997,1009,1013,1019,1021,1031,1033,
+        1039,1049,1051,1061,1063,1069,1087,1091,1093,1097,1103,1109,
+        1117,1123,1129,1151,1153,1163,1171,1181,1187,1193,1201,1213,
+        1217,1223, 1229,1231,1237,1249,1259,1277,1279,1283,1289,1291,
+        1297,1301,1303,1307,1319,1321,1327,1361,1367,1373,1381,1399,
+        1409,1423,1427,1429,1433,1439,1447,1451,1453,1459,1471,1481,
+        1483,1487,1489,1493,1499,1511,1523,1531,1543,1549,1553,1559,
+        1567,1571,1579,1583,1597,1601,1607,1609,1613,1619,1621,1627,
+        1637,1657,1663,1667,1669,1693,1697,1699,1709,1721,1723,1733,
+        1741,1747,1753,1759,1777,1783,1787,1789,1801,1811,1823,1831,
+        1847,1861,1867,1871,1873,1877,1879,1889,1901,1907,1913,1931,
+        1933,1949,1951,1973,1979,1987,1993,1997,1999,2003,2011,2017,
+        2027,2029,2039,2053,2063,2069,2081,2083,2087,2089,2099,2111,
+        2113,2129,2131,2137,2141,2143,2153,2161,2179,2203,2207,2213,
+        2221,2237,2239,2243,2251,2267,2269,2273,2281,2287,2293,2297,
+        2309,2311,2333,2339,2341,2347,2351,2357,2371,2377,2381,2383,
+        2389,2393,2399,2411,2417,2423,2437,2441,2447,2459,2467,2473,
+        2477,2503,2521,2531,2539,2543,2549,2551,2557,2579,2591,2593,
+        2609,2617,2621,2633,2647,2657,2659,2663,2671,2677,2683,2687,
+        2689,2693,2699,2707,2711,2713,2719,2729,2731,2741,2749,2753,
+        2767,2777,2789,2791,2797,2801,2803,2819,2833,2837,2843,2851,
+        2857,2861,2879,2887,2897,2903,2909,2917,2927,2939,2953,2957,
+        2963,2969,2971,2999,3001,3011,3019,3023,3037,3041,3049,3061,
+        3067,3079,3083,3089,3109,3119,3121,3137,3163,3167,3169,3181,
+        3187,3191,3203,3209,3217,3221,3229,3251,3253,3257,3259,3271,
+        3299,3301,3307,3313,3319,3323,3329,3331,3343,3347,3359,3361,
+        3371,3373,3389,3391,3407,3413,3433,3449,3457,3461,3463,3467,
+        3469,3491,3499,3511,3517,3527,3529,3533,3539,3541,3547,3557,
+        3559,3571,3581,3583,3593,3607,3613,3617,3623,3631,3637,3643,
+        3659,3671,3673,3677,3691,3697,3701,3709,3719,3727,3733,3739,
+        3761,3767,3769,3779,3793,3797,3803,3821,3823,3833,3847,3851,
+        3853,3863,3877,3881,3889,3907,3911,3917,3919,3923,3929,3931,
+        3943,3947,3967,3989,4001,4003,4007,4013,4019,4021,4027,4049,
+        4051,4057,4073,4079,4091,4093,4099,4111,4127,4129,4133,4139,
+        4153,4157,4159,4177,4201,4211,4217,4219,4229,4231,4241,4243,
+        4253,4259,4261,4271,4273,4283,4289,4297,4327,4337,4339,4349,
+        4357,4363,4373,4391,4397,4409,4421,4423,4441,4447,4451,4457,
+        4463,4481,4483,4493,4507,4513,4517,4519,4523,4547,4549,4561,
+        4567,4583,4591,4597,4603,4621,4637,4639,4643,4649,4651,4657,
+        4663,4673,4679,4691,4703,4721,4723,4729,4733,4751,4759,4783,
+        4787,4789,4793,4799,4801,4813,4817,4831,4861,4871,4877,4889,
+        4903,4909,4919,4931,4933,4937,4943,4951,4957,4967,4969,4973,
+        4987,4993,4999,5003,5009,5011,5021,5023,5039,5051,5059,5077,
+        5081,5087,5099,5101,5107,5113,5119,5147,5153,5167,5171,5179,
+        5189,5197,5209,5227,5231,5233,5237,5261,5273,5279,5281,5297,
+        5303,5309,5323,5333,5347,5351,5381,5387,5393,5399,5407,5413,
+        5417,5419,5431,5437,5441,5443,5449,5471,5477,5479,5483,5501,
+        5503,5507,5519,5521,5527,5531,5557,5563,5569,5573,5581,5591,
+        5623,5639,5641,5647,5651,5653,5657,5659,5669,5683,5689,5693,
+        5701,5711,5717,5737,5741,5743,5749,5779,5783,5791,5801,5807,
+        5813,5821,5827,5839,5843,5849,5851,5857,5861,5867,5869,5879,
+        5881,5897,5903,5923,5927,5939,5953,5981,5987,6007,6011,6029
+        )
+
+class color:
+   PURPLE = '\033[95m'
+   CYAN = '\033[96m'
+   DARKCYAN = '\033[36m'
+   BLUE = '\033[94m'
+   GREEN = '\033[92m'
+   YELLOW = '\033[93m'
+   RED = '\033[91m'
+   BOLD = '\033[1m'
+   UNDERLINE = '\033[4m'
+   END = '\033[0m'
+    
+class badge_list:
+    def __init__(self, badge: str, value: str, holder: str, score_date: date):
+        self.badge = badge
+        self.value = value
+        self.holder= holder
+        self.score_date=score_date
+
+def nextprime(start):
+    """ Return a prime number equel to or higher than the start number
+    Argument:
+        start: an interger
+    Returns:
+        next prime number: an integer
+        or -1 if start exceeds the primes list
+    """
+    for p_count, next_prime in enumerate(primes):
+        if start == next_prime:
+            return next_prime
+        if start < next_prime:
+            return primes[p_count]
+    return -1
+def prevprime(start):
+    """ Return a prime number equel to or one lower than the start number
+    Argument:
+        start: an interger
+    Returns:
+        previous prime number: an integer
+        or -1 if start exceeds the primes list
+    """
+
+    for p_count, next_prime in enumerate(primes):
+        if start == next_prime:
+            return str(next_prime)
+        if start < next_prime:
+            return str(primes[p_count-1])+get_num_str(primes[p_count-1])
+    return '-1'
+
+def get_num_str(q):
+    p = q % 10
+    x = 'th'
+    if not q % 100 in (11,12,13): 
+        if p == 1:
+            x = 'st'
+        elif p == 2:
+            x = 'nd'
+        elif p == 3:
+            x = 'rd'
+    return x
+
+def parse_datetime(date: str) -> date:
+	'''Convert date from string mm/dd/yyyy to date object.'''
+	return dateutil.parser.parse(date, dayfirst = True).date()
+
+def parse_duration(time: str) -> timedelta:
+	'''Convert time from string [hh:]mm:ss to timedelta object.'''
+	tm = re.compile('[:]+').split(time)
+	if len(tm) == 3:
+		return timedelta(hours = int(tm[0]), minutes = int(tm[1]), seconds = int(tm[2]))
+	else:
+		return timedelta(minutes = int(tm[0]), seconds = int(tm[1]))
+
+def parse_agegrade(grade: str) -> float:
+	'''Convert age grade string (with trailing %) to a float.'''
+	return float(re.compile(r'[^\d.]+').sub('', grade))
+
+class Results_List:
+	'''name, run number, Event result (date, time, pb?, event location and number, finish
+	position, age grading).'''
+	def __init__(self, name: str, run_num: int, date: date, 
+                 time: timedelta, pb: bool, location: str, event_number: int, 
+                 position: int, grade: float, event_run: int, 
+                 initial_list: list, event_initial_count: int, primes: int, item_start: int,
+                 runs_this_year: int, locs_this_year: int, locruns_this_year: int,
+                 runs_in_a_row: int, guest: bool, first_run_date: date, seconds_faster: int, tot_locs: int):
+		'''Result constructor; requires date, run time, pb?, event
+		location and number, finishing position, and age grading.
+        event_run = count at this event, 
+        initial_list = initials of all events, 
+        event_initial_count,
+        primes = number of primes this week, 
+        item_start: int,
+        runs_this_year= int, 
+        locs_this_year= int, 
+        locruns_this_year= int,
+        runs_in_a_row= int, 
+        guest= bool, 
+        first_run_date= date, 
+        seconds_faster = tracks a fastest run of the year. 0= none, 1+ = seconds faster than previous best
+        tot_locs = total locations. It is only >0 if this is a new location'''
+		self.name         = name
+		self.run_num      = run_num
+		self.date         = date
+		self.time         = time
+		self.pb           = pb
+		self.location     = location
+		self.event_number = event_number
+		self.position     = position
+		self.grade        = grade
+		self.event_run    = event_run
+		self.initial_list = initial_list
+		self.event_initial_count = event_initial_count
+		self.primes       = primes
+		self.item_start   = item_start
+		self.runs_this_year   = runs_this_year
+		self.locs_this_year   = locs_this_year
+		self.locruns_this_year = locruns_this_year
+		self.runs_in_a_row     = runs_in_a_row
+		self.guest             = guest
+		self.first_run_date    = first_run_date
+		self.seconds_faster    = seconds_faster        
+		self.tot_locs          = tot_locs
+# class Run_Report:
+# 	def __init__(self, name: str, run_num: int, date: date, 
+#                  time: timedelta, pb: bool, location: str, event_number: int, 
+#                  position: int, grade: float, event_run: int, primes: int,
+#                     t1: str, t2: str, t3: str, t4: str, t5: str, 
+#                     initial: str, initial_list: str):
+# 		self.name         = name
+# 		self.run_num      = run_num
+# 		self.date         = date
+# 		self.time         = time
+# 		self.pb           = pb
+# 		self.location     = location
+# 		self.event_number = event_number
+# 		self.position     = position
+# 		self.grade        = grade
+# 		self.event_run    = event_run
+# 		self.primes       = primes
+#         self.t1=''
+#         self.t2=''
+#         self.t3=''
+#         self.t4=''
+#         self.t5=''
+#         self.initial=''
+#         self.initial_list=''):
+        
+class Result:
+	'''Event result (date, time, pb?, event location and number, finish
+	position, age grading).'''
+	def __init__(self, date: date, time: timedelta, pb: bool, location: str, event_number: int, position: int, grade: float):
+		'''Result constructor; requires date, run time, pb?, event
+		location and number, finishing position, and age grading.'''
+		self.date         = date
+		self.time         = time
+		self.pb           = pb
+		self.location     = location
+		self.event_number = event_number
+		self.position     = position
+		self.grade        = grade
+	def __str__(self):
+		'''Standard str() method; not too much going on, although dates
+		are converted to a string in the format yyyy-mm-dd and the run
+		time is converted from seconds to hh:mm:ss.'''
+		p = self.position % 10
+		x = 'th'
+		if p == 1:
+			x = 'st'
+		elif p == 2:
+			x = 'nd'
+		elif p == 3:
+			x = 'rd'
+		mp = {  'l': self.location,
+			'n': self.event_number,
+			'd': self.date.strftime('%Y-%m-%d'),
+			't': self.time,
+			'p': self.position,
+			'x': x,
+			'g': self.grade }
+		return '%(l)-16s (%(n)4d) on %(d)s with %(t)s in %(p)3d%(x)s (%(g).2f%%)' % mp + (' PB!' if self.pb else '')
+	def _json(self):
+		'''Create a dictionary that can be easily converted to a JSON
+		object. NB The time in this object stays in seconds.'''
+		return { 'location'    : self.location,
+			 'event_number': self.event_number,
+			 'date'        : self.date.strftime('%Y-%m-%d'),
+			 'time'        : self.time,
+			 'position'    : self.position,
+			 'age_grade'   : self.grade }
+	@staticmethod
+	def json(result_list: list) -> str:
+		'''Export the list of results as JSON string.'''
+		tmp = []
+		for result in result_list:
+			if not isinstance(result, Result):
+				raise TypeError('Object "' + str(result) + '" is not a Result!')
+			tmp.append(result._json())
+		return json.dumps(tmp)
+    
+def display_results_all(results: list):
+    '''Display all results.'''
+    c=0
+    for result in sorted(results, key = lambda result: result.date):
+        print(str(c)+' - ')
+        print(result.date)
+        c += 1
+        
+def display_last_result(results: list):
+	'''Display most recent result.'''
+	for result in sorted(results, key = lambda result: result.date):
+		print(result)
+        
+def check_anniversary (d1, d2):
+    years=d2.year-d1.year
+    d3 = date(d2.year, d1.month, d1.day) #(Anniv day)
+    if d3 > d2:
+        years -= 1
+        d3 = date(d2.year-1, d1.month, d1.day) 
+    return (years, (d2-d3).days)
+
+def get_result(barcode) -> list:
+    # html = requests.get('https://www.parkrun.org.uk/parkrunner/'+barcode+'/all/', 
+#    html = requests.get('file:///C:/Users/User/Downloads/results%20_%20parkrun%20UK%20robin.html').content
+#                         headers = {'Cache-Control': 'no-cache', 
+#                                    "Pragma": "no-cache",
+#                                    'user-agent': 'Chrome/43.0.2357' }).content
+#    soup = BeautifulSoup(re.sub(r'(\s)+', ' ', str(html)))
+
+#    soup = BeautifulSoup(open("C:/Users/User/Downloads/results%20_%20parkrun%20UK%20robin.html", encoding="utf8"), "html.parser")
+    html = open("C:/Users/User/Downloads/results"+barcode+".html", "r") 
+
+    contents = html.read() 
+  
+    soup = BeautifulSoup(re.sub(r'(\s)+', ' ', str(contents)))
+
+#    print(soup.prettify())
+#    print (soup.find_all('table'))
+
+    table = soup.findAll('table', attrs = { 'id': 'results' })[2]
+
+    headings = [th.get_text() for th in table.find('tr').find_all('th')]
+    results = []
+    for row in table.find_all('tr')[1:]:
+        r = dict(zip(headings, (td.get_text(strip=True) for td in row.find_all('td'))))
+#        print(r)
+        results.append(Result(parse_datetime(r['Run Date\xa0\xa0']),
+                      parse_duration(r['Time\xa0\xa0']),
+                      'PB' in r['PB?\xa0\xa0'],
+                      r['Event\xa0\xa0'],
+                      int(r['Run Number\xa0\xa0']),
+                      int(r['Pos\xa0\xa0']),
+                      parse_agegrade(r['Age Grade\xa0\xa0'])))
+    return sorted(results, key=attrgetter('date'), reverse=True)
+
+def print_data(eventline):
+    prime_total=0
+    print(color.BOLD + 'PRIME RUNNER report for', eventline.name, 'on', eventline.date,color.END)
+    n = nextprime(eventline.run_num)
+    t = "This is "+eventline.name+"'s "+str(eventline.run_num)+get_num_str(eventline.run_num)+' run,'
+    if eventline.run_num == n:
+        print(t, color.BOLD + 'which is a PRIME NUMBER!'+color.END)
+        prime_total += 1
+    else:
+        print(t, '- Not a prime. Your next prime run will be your '+str(n)+get_num_str(n))
+    
+    n = nextprime(eventline.event_run)
+    t = "It is your "+str(eventline.event_run)+get_num_str(eventline.event_run)+' run at '+eventline.location
+    if eventline.event_run == n:
+        print(t, color.BOLD + ', which is a PRIME NUMBER!'+color.END)
+        prime_total += 1
+    else:
+        print(t, ' - Not a prime. Next',eventline.location,'prime run is the '+str(n)+get_num_str(n))
+        
+    n = nextprime(eventline.event_number)
+    if eventline.event_number == n:
+        print(eventline.location, 'Event number: ',eventline.event_number, color.BOLD + 'which is a PRIME NUMBER!'+color.END)
+        prime_total += 1
+    else:
+        print(eventline.location, 'Event number: ', eventline.event_number, '- Not a prime. The next prime event here is',n)
+    
+    n = nextprime(eventline.position)
+    if n == eventline.position:
+        print('Finishing at position:', eventline.position, color.BOLD + 'which is a PRIME NUMBER!'+color.END)
+        prime_total += 1
+    else:
+        print('Finishing at position:', eventline.position, '- Not a prime. You could aim for',prevprime(eventline.position), 'next week.')
+
+    runtime=str(eventline.time)
+    runtime_n=int(runtime[2:4]+runtime[5:])
+    n = nextprime(runtime_n)
+    if n == runtime_n:
+        print('Your time was',eventline.time,'=', n, color.BOLD + 'which is a PRIME NUMBER!'+color.END)
+        prime_total += 1
+    else:
+        x=prevprime(runtime_n)
+        while int(x[2:4]) > 60: x=prevprime(int(x[:4])-1)
+        print('Your time was',eventline.time,'=', runtime_n, '- Not a prime. You could aim for',x[0:2]+':'+x[2:4], 'next week.')
+    
+    #print('Date=',(dir(eventline.date)))
+
+    lastrun=eventline.date
+    #print()
+    if prime_total == 0:
+        print('Sorry,',eventline.name,' had no primes this week,')
+    elif prime_total == 1:
+        print(eventline.name,'had just',prime_total, 'prime this week.')
+    elif prime_total == 2 or prime_total == 3:
+        print('Impressive.', eventline.name, 'achieved',prime_total, 'primes this week.')
+    else:
+        print('We have a winner. With all', prime_total, 'primes', eventline.name,'is a Prime Runner this week.')
+    
+    if eventline.pb:
+        print('And we should also note that this is a PB for',eventline.name,'at',eventline.location)
+        
+    
+    years, days = check_anniversary (eventline.first_run_date, eventline.date)
+    if days < 7: print (years, 'Parkrun Anniversary this week')
+    
+
+def get_last_result(r_list,name,run_num,event_run, initial_list, event_initial_count, next_list,
+                    runs_this_year, locs_this_year, locruns_this_year, runs_in_a_row, guest, 
+                    first_run_date, best_this_year, tot_locs) -> list:
+    # print(next_list.date)
+    r_list.append(Results_List(name,
+          run_num,
+          next_list.date,
+          next_list.time,
+          next_list.pb,
+          next_list.location,
+          next_list.event_number,
+          next_list.position,
+          next_list.grade,
+          event_run,
+          initial_list, 
+          event_initial_count,
+          0,
+          0,
+          runs_this_year,
+          locs_this_year,
+          locruns_this_year,
+          runs_in_a_row,
+          guest,
+          first_run_date,
+          best_this_year,
+          tot_locs))
+    return r_list
+
+def draw_card(cr, item_start, rline, ran_this_week, h):
+    
+    offset_down = ((item_start)+100)*sf
+    offset_across = 5*sf
+    rline.item_start=item_start
+    
+    cr.move_to(offset_across,offset_down)
+    cr.rel_line_to(12*sf,-12*sf)
+    cr.rel_line_to(163*sf,0)
+    cr.rel_line_to(12*sf,12*sf)
+    cr.rel_line_to(200*sf,0)
+    cr.rel_curve_to(0,0, 15*sf,0, 15*sf,15*sf)
+    cr.rel_curve_to(0,24*sf, 0,48*sf, 0,(88+h)*sf)
+    cr.rel_line_to(-6*sf,6*sf)
+    cr.rel_line_to(-390*sf,0)
+    cr.rel_line_to(-6*sf,-6*sf)
+    cr.close_path()
+
+    sr1 = cairo.ImageSurface.create_from_png("browncard3.png")
+    pt1 = cairo.SurfacePattern(sr1)
+    cr.set_source(pt1)
+    pt1.set_extend(cairo.EXTEND_REFLECT)
+#    pt1.set_extend(cairo.EXTEND_REPEAT)
+    #cr.set_source_rgba(0, 0, 0, 0.1)
+    cr.fill_preserve()
+    
+    cr.set_line_width(2)
+    cr.set_source_rgba(.27, .25, .16, 0.5)
+    cr.stroke()
+    
+    cr.set_source_rgba(.27, .25, .16, 0.5)
+    cr.select_font_face("Times", cairo.FONT_SLANT_NORMAL,
+        cairo.FONT_WEIGHT_BOLD)
+    cr.set_font_size(24)
+    
+    cr.move_to(offset_across+12*sf,offset_down+3*sf)
+    cr.show_text(rline.name)
+    cr.move_to(offset_across+11*sf,offset_down+2*sf)
+    cr.set_source_rgba(.87, .95, .56, 0.8)
+    cr.set_font_size(24)
+    cr.show_text(rline.name)
+    
+    if ran_this_week:
+        cr.set_source_rgba(.27, .25, .16, 0.8)
+        cr.set_font_size(20)
+        cr.select_font_face("Times", cairo.FONT_SLANT_NORMAL,
+            cairo.FONT_WEIGHT_NORMAL)
+        cr.show_text(' ('+rline.location+')')
+
+        cr.set_source_rgba(.87, .95, .56, 1)
+        cr.set_font_size(14)
+        cr.select_font_face("Times", cairo.FONT_SLANT_ITALIC,
+            cairo.FONT_WEIGHT_NORMAL)
+        cr.move_to(offset_across+144*sf,offset_down+9*sf)
+        cr.show_text(str(rline.date))
+
+
+    #     rline.name         = name
+    # 		self.run_num      = run_num
+    # 		self.date         = date
+    # 		self.time         = time
+    # 		self.pb           = pb
+    # 		self.location     = location
+    # 		self.event_number = event_number
+    # 		self.position     = position
+    # 		self.grade        = grade
+    # 		self.event_run    = event_run
+    # 		self.primes       = primes
+
+        cr.set_source_rgba(.87, .95, .56, 0.2)
+        #across, down, width, height
+        m1, m2 = 5*sf, 185*sf
+        w1, w2, h = 170*sf, 28*sf, 12*sf
+        n = nextprime(rline.run_num)
+        t = rline.name+"'s "+str(rline.run_num)+get_num_str(rline.run_num)+" run."
+        if rline.run_num == n:
+            p,q = 1,"NICE PRIME"
+        else:
+            p,q = 0,"Your next prime run will be your "+str(n)+get_num_str(n)
+        draw_rect(cr,offset_across+m2,offset_down+11*sf, w2,h,p,str(rline.run_num),'')
+        draw_rect(cr,offset_across+m1,offset_down+11*sf, w1,h, p, t, q)
+        rline.primes += p
+
+        n = nextprime(rline.event_run)
+        t = "Your "+str(rline.event_run)+get_num_str(rline.event_run)+" run at "+rline.location[:17]
+        if rline.event_run == n:
+            p,q = 1,"NICE PRIME"
+        else:
+            p,q = 0,"Next prime here will be your "+str(n)+get_num_str(n)
+        draw_rect(cr,offset_across+m2,offset_down+26*sf, w2,h,p,str(rline.event_run),'')
+        draw_rect(cr,offset_across+m1,  offset_down+26*sf, w1,h, p, t, q)
+        rline.primes += p
+
+        n = nextprime(rline.event_number)
+        t = rline.location[:19]+" event number:"
+        if rline.event_number == n:
+            p,q = 1,"NICE PRIME"
+        else:
+            p,q = 0,"Next "+rline.location[:13]+" prime run is the "+str(n)+get_num_str(n)
+        draw_rect(cr,offset_across+m2,offset_down+41*sf, w2,h,p,str(rline.event_number),'')
+        draw_rect(cr,offset_across+m1,  offset_down+41*sf, w1,h, p, t, q)
+        rline.primes += p
+
+        n = nextprime(rline.position)
+        t = "Finishing position this week:"
+        if rline.position == n:
+            p,q = 1,"NICE PRIME"
+        else:
+            p,q = 0,"You could aim for "+prevprime(rline.position)+" next week"
+        draw_rect(cr,offset_across+m2,offset_down+56*sf, w2,h,p,str(rline.position),'')
+        draw_rect(cr,offset_across+m1,  offset_down+56*sf, w1,h, p, t, q)
+        rline.primes += p
+
+        runtime=str(rline.time)
+        runtime_n=int(runtime[2:4]+runtime[5:])
+        n = nextprime(runtime_n)
+        t = 'Your time was '+runtime+' = ...'
+        if runtime_n == n:
+            p,q = 1,"NICE PRIME"
+        else:
+            x=prevprime(runtime_n)
+            while int(x[2:4]) > 60: x=prevprime(int(x[:4])-1)
+            p,q = 0,"You could aim for "+x[0:2]+":"+x[2:4]+" next week."
+        draw_rect(cr,offset_across+m2,offset_down+71*sf, w2,h, p, str(runtime_n), '')
+        draw_rect(cr,offset_across+m1,  offset_down+71*sf, w1,h, p, t, q)
+        rline.primes += p
+
+        # print(rline.primes)
+
+    #     draw_rect(cr,offset_across+185,offset_down+26, 28,12,0,'160','')
+    #     draw_rect(cr,offset_across+185,offset_down+41, 28,12,0,'492','')
+    #     draw_rect(cr,offset_across+185,offset_down+56, 28,12,0,'36','')
+    #     draw_rect(cr,offset_across+185,offset_down+71, 28,12,0,'2119','')
+
+
+    #     draw_rect(cr,offset_across+5,offset_down+26, 170,12,0,'', 'Try this val next------------')
+    #     draw_rect(cr,offset_across+5,offset_down+41, 170,12,0,'Number of events held by this parkrun', 'Try this next')
+    #     draw_rect(cr,offset_across+5,offset_down+56, 170,12,0,'Position this week', 'Try this next')
+    #     draw_rect(cr,offset_across+5,offset_down+71, 170,12,0,'Time this week: 21:19 =', 'Try this next')
+
+        lastrun=rline.date
+        pos_down = 95
+        cr.move_to(offset_across+m1*2, offset_down+pos_down*sf)
+        cr.set_source_rgba(0, 0, 0, 0.7)
+        cr.select_font_face("Sans", cairo.FONT_SLANT_NORMAL,
+                cairo.FONT_WEIGHT_NORMAL)
+        cr.set_font_size(18)
+
+        if rline.primes == 0:
+            cr.show_text('Sorry, '+rline.name+' had no primes this week.')
+        elif rline.primes == 1:
+            cr.show_text(rline.name+' had just 1 prime this week.')
+        elif rline.primes == 2 or rline.primes == 3:
+            cr.show_text('Impressive. '+rline.name+' achieved '+str(rline.primes)+' primes this week.')
+        else:
+            cr.show_text('We have a winner. With all 5 primes '+rline.name+' is a Prime Runner this week.')
+        pos_down += 12
+        cr.move_to(offset_across+82, offset_down+pos_down*sf)
+        if rline.pb:
+            print('New PB!')
+            add_star(cr, item_start, pos_down)
+            cr.show_text('Extra star for '+rline.name+' as this is a PB at '+rline.location)
+            pos_down += 12
+            cr.move_to(offset_across+82, offset_down+pos_down*sf)
+ 
+        ann_years, ann_days = check_anniversary (rline.first_run_date, rline.date)
+        if ann_days < 7: 
+            print (rline.date, rline.first_run_date, ann_years, 'year Parkrun Anniversary this week')
+            add_star(cr, item_start, pos_down)
+            cr.show_text(str(ann_years)+get_num_str(ann_years)+' Anniversary Parkrun this week!')
+            pos_down += 12
+            cr.move_to(offset_across+82, offset_down+pos_down*sf)
+ 
+                        
+        def nelsons_test(val1, pos_down):
+            x=str(val1)
+            if len(x)<3: return 0,0
+            for q in range(len(x)):
+                if x[q] == x[0]: 
+                    t= True
+                else:
+                    t=False
+            if val1 % 111 == 0:  # check for Nelsons
+                print('Nelsons!')
+                add_button_image(cr, item_start, pos_down, 111)
+                cr.move_to(offset_across+64, offset_down+10+pos_down*sf)
+                cr.show_text("Congratulations. Your "+str(val1)+" gains you the 'Nelsons' button")
+                add_one_to_score(bl_new, "111", rline.name, rline.date)
+                return 16,20
+            return 0,0
+                
+        def button_test(val1, pos_down):    
+            t1,text1=check_for_button(val1)
+            if t1 and val1 != 111:
+                print(text1)
+                add_button_image(cr, item_start, pos_down, val1)
+                cr.move_to(offset_across+64, offset_down+10+pos_down*sf)
+                cr.show_text("Congratulations. Your "+str(val1)+" gains you the '"+text1+"' button")
+                add_one_to_score(bl_new, str(val1), rline.name, rline.date)
+                return 16,20
+            return 0,0
+        
+        Button_extra_down, Button_down= nelsons_test(rline.run_num, pos_down)
+        pos_down+=Button_down
+        Button_extra_down, Button_down= button_test(rline.run_num, pos_down)
+        pos_down+=Button_down
+        Button_extra_down, Button_down= nelsons_test(rline.event_run, pos_down)
+        pos_down+=Button_down
+        Button_extra_down, Button_down= button_test(rline.event_run, pos_down)
+        pos_down+=Button_down
+        Button_extra_down, Button_down= nelsons_test(rline.event_number, pos_down)
+        pos_down+=Button_down
+        Button_extra_down, Button_down= button_test(rline.event_number, pos_down)
+        pos_down+=Button_down
+        Button_extra_down, Button_down= nelsons_test(rline.position, pos_down)
+        pos_down+=Button_down
+        Button_extra_down, Button_down= button_test(rline.position, pos_down)
+        pos_down+=Button_down
+        Button_extra_down, Button_down= nelsons_test(runtime_n, pos_down)
+        pos_down+=Button_down
+        Button_extra_down, Button_down= button_test(runtime_n, pos_down)
+        pos_down+=Button_down
+        pos_down += Button_extra_down
+        cr.move_to(offset_across+82, offset_down+pos_down*sf)
+           
+        if rline.event_initial_count == 1:
+            add_star(cr, item_start, pos_down)
+            cr.show_text(rline.location[:12]+" adds '"+rline.location[0]+
+                         "' to your Event Initials List, bringing it to ")
+            for x in range(len(rline.initial_list)): 
+                cr.show_text(rline.initial_list[x])
+            pos_down += 12
+            cr.move_to(offset_across+82, offset_down+pos_down*sf)
+            print('New Initial Letter!')
+        if rline.run_num % 25 == 0: 
+            add_star(cr, item_start, pos_down)
+            cr.show_text("Mini Run Milestone: This is your "+str(rline.run_num)+
+                         get_num_str(rline.run_num)+" Run. Great Achievement")
+            pos_down += 12
+            cr.move_to(offset_across+82, offset_down+pos_down*sf)
+            print('Mini run milestone!')
+        elif rline.run_num % 5 == 0: 
+            add_star(cr, item_start, pos_down, True)
+            cr.show_text("Micro Run Milestone: This is your "+str(rline.run_num)+
+                         get_num_str(rline.run_num)+" Run. Good going")
+            pos_down += 12
+            cr.move_to(offset_across+82, offset_down+pos_down*sf)
+            print('Micro run milestone!')
+            
+        if rline.seconds_faster > 0:
+            add_star(cr, item_start, pos_down)
+            cr.show_text("Hey: "+str(rline.time)+" is "+rline.name+"'s fastest run of the year so far, by "+
+                         str(rline.seconds_faster)+" seconds. Very nice")
+            pos_down += 12
+            cr.move_to(offset_across+82, offset_down+pos_down*sf)
+            print('Fastest run of the year!')
+ 
+        if rline.event_run % 25 == 0: 
+            add_star(cr, item_start, pos_down)
+            cr.show_text("Event Milestone: This is your "+str(rline.event_run)+get_num_str(rline.event_run)+
+                         " run at "+rline.location[:17])
+            pos_down += 12
+            cr.move_to(offset_across+82, offset_down+pos_down*sf)
+            print('Event milestone!')
+            
+        elif rline.event_run % 5 == 0: 
+            add_star(cr, item_start, pos_down, True)
+            cr.show_text("Micro Event Milestone: This is your "+str(rline.event_run)+get_num_str(rline.event_run)+
+                         " run at "+rline.location[:17])
+            pos_down += 12
+            cr.move_to(offset_across+335, offset_down+pos_down*sf)
+            print('Micro event milestone!')
+            
+        if rline.run_num % 50 == 0:
+            add_milestone(cr, item_start, rline.run_num, 
+                          fullname(rline.name), rline.date.strftime("%d %B %Y"), rline.location)
+            print('===',fullname(rline.name), rline.date.strftime("%A %d %B %Y"), rline.location,'===')
+            
+        if rline.runs_in_a_row > 2:
+            add_row_of_runs(cr, item_start, pos_down, rline.runs_in_a_row)
+            cr.move_to((18+6*rline.runs_in_a_row)*sf,(item_start+104+pos_down)*sf)
+            cr.set_source_rgba(0, 0, 0, 0.6)
+            cr.set_font_size(20)
+            cr.show_text(str(rline.runs_in_a_row)+get_num_str(rline.runs_in_a_row)+
+                         " run in a row at "+rline.location[:17])
+            print(rline.runs_in_a_row,' runs in a row')
+            check_badge("xinarow", rline.runs_in_a_row, rline.name,rline.date)
+            pos_down += 12
+                        
+        #runs_this_year, locs_this_year, locruns_this_year
+        if rline.runs_this_year % 10 == 0 or rline.runs_this_year >= 45:
+            draw_button(cr,offset_down+pos_down*sf,18*sf,18,'blue1')
+            cr.move_to(offset_across+12, offset_down+8+pos_down*sf)
+            cr.set_source_rgba(1, 1, 1, 1)
+            cr.set_font_size(23)
+            t=''
+            if rline.runs_this_year < 10:
+                t=get_num_str(rline.runs_this_year)
+            cr.show_text(str(rline.runs_this_year))
+            if len(t) > 0: 
+                cr.set_font_size(18)
+                cr.show_text(t)
+                t=''
+            else:
+                t=' '+get_num_str(rline.runs_this_year)
+            cr.set_source_rgba(0, 0, 0, 0.7)
+            cr.set_font_size(20)
+            cr.show_text(" "+t+" run of "+str(rline.date.year))
+            check_badge("year_milestone", rline.runs_this_year, rline.name, rline.date)
+
+            
+        if rline.locruns_this_year == 1:
+            draw_button(cr,offset_down+pos_down*sf,126*sf,18,'green1')
+            cr.move_to(offset_across+13+(108*sf), offset_down+8+pos_down*sf)
+            cr.set_source_rgba(1, 1, 1, 1)
+            cr.set_font_size(23)
+            t=''
+            if rline.locs_this_year < 10:
+                t=get_num_str(rline.locs_this_year)
+            cr.show_text(str(rline.locs_this_year))
+            if len(t) >0: 
+                cr.set_font_size(18)
+                cr.show_text(t)
+                t=''
+            else:
+                t=' '+get_num_str(rline.locs_this_year)
+ 
+            cr.set_source_rgba(0, 0, 0, 0.7)
+            cr.set_font_size(20)
+            cr.show_text(t+"  Parkrun location of "+str(rline.date.year))
+            check_badge("year_tourist", rline.locs_this_year, rline.name, rline.date)
+            
+        if rline.tot_locs > 0:     # Above zero means it is a new location, so show total venues button
+            # pos_down += 10
+            draw_button(cr,offset_down+pos_down*sf,286*sf,18,'green1')
+            cr.move_to(offset_across+13+(268*sf), offset_down+8+pos_down*sf)
+            cr.set_source_rgba(1, 1, 1, 1)
+            cr.set_font_size(23)
+            t=''
+            if rline.tot_locs < 10:
+                t=get_num_str(rline.tot_locs)
+            cr.show_text(str(rline.tot_locs))
+            if len(t) >0: 
+                cr.set_font_size(18)
+                cr.show_text(t)
+                t=''
+            else:
+                t=' '+get_num_str(rline.tot_locs)
+ 
+            cr.set_source_rgba(0, 0, 0, 0.7)
+            cr.set_font_size(20)
+            cr.show_text(t+"  Parkrun venue")
+
+
+        if rline.locruns_this_year % 5 == 0:
+            draw_button(cr,offset_down+pos_down*sf,126*sf,18,'red1')
+            cr.move_to(offset_across+13+(108*sf), offset_down+8+pos_down*sf)
+            cr.set_source_rgba(1, 1, 1, 1)
+            cr.set_font_size(23)
+            t=''
+            if rline.locruns_this_year < 10:
+                t=get_num_str(rline.locruns_this_year)
+            cr.show_text(str(rline.locruns_this_year))
+            if len(t) >0: 
+                cr.set_font_size(18)
+                cr.show_text(t)
+                t=''
+            else:
+                t=' '+get_num_str(rline.locruns_this_year)
+            cr.set_source_rgba(0, 0, 0, 0.7)
+            cr.set_font_size(20)
+            cr.show_text(" "+t+" run this year at "+rline.location[:17])
+
+        if (rline.runs_this_year % 10 == 0 or rline.runs_this_year > 47 
+                or rline.locruns_this_year == 1 
+                or rline.locruns_this_year % 16 == 0):
+            pos_down += 14
+            cr.move_to(offset_across+32, offset_down+pos_down*sf)
+        if runtime[2]==runtime[6] and runtime[3]==runtime[5]:
+            check_badge("palindrome", "1", rline.name, rline.date)
+            draw_palindrome(cr, item_start, False)
+        
+    elif not rline.guest:
+    # No time found for this week's run
+        cr.set_source_rgba(.27, .25, .16, 0.8)
+        cr.set_font_size(20)
+        cr.select_font_face("Times", cairo.FONT_SLANT_NORMAL,
+            cairo.FONT_WEIGHT_NORMAL)
+        cr.show_text(' (No run recorded this week)')
+#        if rline.name == "Robin": 
+#            pos_down = 24
+#            add_star(cr, item_start, pos_down)
+#            cr.move_to(offset_across+32, offset_down+pos_down*sf)
+#            cr.show_text("Technical Error Star, for your unrecorded 25:00 at Braunstone Park")
+#            pos_down += 12
+#            cr.move_to(offset_across+32, offset_down+pos_down*sf)
+#            print('Technical star')
+
+def fullname(name):
+    if name in ['Kev','William','Rosie','Trev', 'Sarah']:
+        return(name+' Imbush')
+    if name in ['Robin','Esther']:
+        return(name+' Stevenson')
+    elif name == 'Tom':
+        return ('Tom Townsend')
+    else:
+        return(name)
+    
+def parse_duration(time: str) -> timedelta:
+	'''Convert time from string [hh:]mm:ss to timedelta object.'''
+	tm = re.compile('[:]+').split(time)
+	if len(tm) == 3:
+		return timedelta(hours = int(tm[0]), minutes = int(tm[1]), seconds = int(tm[2]))
+	else:
+		return timedelta(minutes = int(tm[0]), seconds = int(tm[1]))
+        
+def draw_palindrome(cr,item_start,stored):
+    y=(item_start+171)*sf
+    x=126*sf
+    ink = rgb_hex('violet')
+    if stored: # Assign the 'Palindromic Mark'
+        cr.save()
+        ink = rgb_hex('violet')
+        cr.set_source_rgba(ink[0], ink[1], ink[2], 0.8)
+        cr.rectangle(x+86,y+2,10.5*sf, 10*sf)
+        cr.fill()
+        cr.set_source_rgba(0,0,0, 0.8)
+        cr.set_font_size(11)
+        cr.move_to(x+86,y+12)
+        cr.select_font_face("Arial", cairo.FONT_SLANT_NORMAL,
+            cairo.FONT_WEIGHT_NORMAL)
+        cr.show_text('PAL')
+        cr.move_to(x+107,y+12)
+        cr.rotate(math.pi)
+        cr.show_text('PAL')
+        cr.restore()
+    else:
+        cr.save()
+        cr.set_font_size(13)
+        cr.set_source_rgba(ink[0], ink[1], ink[2], 1)
+        cr.rectangle(x-20,y+2,48*sf, 10*sf)
+        cr.fill_preserve()
+        ink = rgb_hex('red2')
+        cr.set_source_rgba(ink[0], ink[1], ink[2], 1)
+        cr.stroke()
+        cr.move_to(x-18,y+17)
+        cr.show_text('PALINDROME!')
+        cr.restore()
+
+def draw_groundhog(cr,item_start,stored, name):
+    y=(item_start+171)*sf
+    x=126*sf
+    if badge_score(bl_new, 'palindrome', name) > "0":
+        x -= 22 # Shift left if there is already a PAL
+    ink = rgb_hex('green1')
+    if stored: # Gets to hold the 'Groundhog'
+        cr.save()
+        ink = rgb_hex('green1')
+        cr.set_source_rgba(ink[0], ink[1], ink[2], 0.8)
+        cr.rectangle(x+86,y+2,10.5*sf, 10*sf)
+        cr.fill()
+        cr.set_source_rgba(0,0,0, 0.8)
+        cr.set_font_size(18)
+        cr.move_to(x+87,y+19)
+        cr.select_font_face("Agency FB", cairo.FONT_SLANT_NORMAL,
+            cairo.FONT_WEIGHT_NORMAL)
+        cr.show_text('GhD')
+        cr.restore()
+    else:
+        cr.save()
+        cr.set_font_size(13)
+        cr.set_source_rgba(ink[0], ink[1], ink[2], 1)
+        cr.rectangle(x+2,y+2,48*sf, 10*sf)
+        cr.fill_preserve()
+        ink = rgb_hex('green2')
+        cr.set_source_rgba(ink[0], ink[1], ink[2], 1)
+        cr.stroke()
+        cr.move_to(x+5,y+19)
+        cr.set_source_rgba(0,0,0, 0.8)
+        cr.set_font_size(18)
+        cr.select_font_face("Agency FB", cairo.FONT_SLANT_NORMAL,
+            cairo.FONT_WEIGHT_NORMAL)
+        cr.show_text('GROUNDHOG DAY!')
+        cr.restore()
+
+def draw_rect(cr, x,y,w,h,p,t1,t2):
+    cr.set_source_rgba(.27, .25, .16, 0.4)
+    cr.rectangle(x+1,y+1,w,h)
+    cr.stroke()
+    if p == 0:
+        cr.set_source_rgba(.87, .95, .56, 0.4)
+    #across, down, width, height
+    else:
+        cr.set_source_rgba(.98, .86, .38, 0.8)
+    cr.rectangle(x,y,w,h)
+    cr.fill_preserve()
+    if p == 0:
+        cr.set_source_rgba(.67, .65, .66, 0.8)
+    else:
+        cr.set_source_rgba(.92, .95, .96, .9)
+    cr.stroke()
+    
+    cr.set_source_rgba(0, 0, 0, 0.7)
+    if p == 0:
+        cr.select_font_face("Sans", cairo.FONT_SLANT_NORMAL,
+            cairo.FONT_WEIGHT_NORMAL)
+    else:
+        cr.select_font_face("Sans", cairo.FONT_SLANT_NORMAL,
+            cairo.FONT_WEIGHT_BOLD)
+    
+    cr.set_font_size(18)
+    cr.move_to(x+5*sf,y+10*sf)
+    cr.show_text(t1)
+    cr.move_to(x+215*sf,y+10*sf)
+    cr.show_text(t2)
+
+def svg_page_setup(cr,d):
+    
+    # creating a cairo context object
+    #for SVG surface
+    #using Context method
+    cr.set_source_rgba(.98, .86, .38, 0.8)  
+    cr.rectangle(20, 40, 800, 100)
+    cr.fill()
+    
+    cr.set_source_rgba(0.2, 0.2, 0.1, 0.8)
+    cr.set_line_width(3)
+        # across, down, width, height
+    cr.rectangle(20, 40, 800, 100)       
+     
+    #Setting line join style
+    cr.set_line_join(cairo.LINE_JOIN_ROUND)
+    
+     
+    # stroke out the color and width property
+    cr.stroke()
+    
+    cr.set_source_rgb(0, 0, 0)
+    cr.select_font_face("Times", cairo.FONT_SLANT_NORMAL,
+        cairo.FONT_WEIGHT_BOLD)
+    cr.set_font_size(30)
+    
+    cr.move_to(30, 38*sf)
+    cr.show_text("Who will be the Squuaaad’s")
+    cr.move_to(30, 57*sf)
+    cr.show_text("'Prime Runner' this week - "+d.date.strftime("%A %d %B %Y"))
+    
+def add_row_of_runs(cr, item_start,down, runs_in_a_row):
+    left=18
+    for x in range(runs_in_a_row):
+        draw_button(cr,(item_start+99+down)*sf,left*sf,8,'green2')
+        left += 6   
+
+def add_button_image(cr, item_start, down, val1):
+    """Draw a scaled button image on a given context."""
+    top = (item_start+90+down)*sf
+    left = 8*sf
+    height, width = 28*sf,28*sf
+    if os.path.exists("button"+str(val1)+".png"):
+        image_surface = cairo.ImageSurface.create_from_png("button"+str(val1)+".png")
+    else:
+        image_surface = cairo.ImageSurface.create_from_png("shinystar.png")
+    
+    # calculate proportional scaling
+    img_height = image_surface.get_height()
+    img_width = image_surface.get_width()
+    width_ratio = float(width) / float(img_width)
+    height_ratio = float(height) / float(img_height)
+    scale_xy = min(height_ratio, width_ratio)
+    # scale image and add it
+    cr.save()
+    cr.translate(left, top)
+    cr.scale(scale_xy, scale_xy)
+    cr.set_source_surface(image_surface)
+
+    cr.paint()
+    cr.restore()
+
+    
+def add_star(cr, item_start, down, small=False):
+    """Draw a scaled star image on a given context."""
+    top = (item_start+90+down)*sf
+    left = 33*sf+random.randint(1,6)
+    height, width = 12*sf,12*sf
+    if small: 
+        height-= 2*sf
+        width -= 2*sf
+    image_surface = cairo.ImageSurface.create_from_png("shinystar.png")
+    # calculate proportional scaling
+    img_height = image_surface.get_height()
+    img_width = image_surface.get_width()
+    width_ratio = float(width) / float(img_width)
+    height_ratio = float(height) / float(img_height)
+    scale_xy = min(height_ratio, width_ratio)
+    # scale image and add it
+    cr.save()
+    cr.translate(left, top)
+    cr.scale(scale_xy, scale_xy)
+    cr.set_source_surface(image_surface)
+
+    cr.paint()
+    cr.restore()
+
+def add_milestone(cr, item_start, milestone, text1, text2, text3):
+    sf=2
+    height, width = 62*sf,62*sf
+    top = (item_start+120)*sf
+    left = 127*sf
+
+    cr.save()
+    tempps = cairo.ImageSurface.create_from_png('brownmedallion.png')
+    ctx = cairo.Context(tempps)
+#    m_height = tempps.get_height()
+    m_width = tempps.get_width()
+    m_size = m_width/2
+    ctx.save()
+    ctx.set_font_size(80)
+    ctx.select_font_face("Baskerville Old Face", cairo.FONT_SLANT_NORMAL,
+             cairo.FONT_WEIGHT_NORMAL)
+
+    text_on_a_circle(ctx,m_size, m_size, (m_size-ctx.text_extents('M')[3]*1.38), text1+' ', text2+' ', text3+' ',1)
+    ctx.restore()
+    ratio = float(width+28) / float(m_width)
+#    height_ratio = float(height) / float(m_height)
+#    scale_xy = min(height_ratio, width_ratio)
+    cr.translate(left-14, top-14)
+    cr.scale(ratio, ratio)
+    cr.set_source_surface(tempps)
+    cr.paint()
+    cr.restore()
+
+    image_surface = cairo.ImageSurface.create_from_png("milestone"+str(milestone)+".png")
+    # calculate proportional scaling
+    img_height = image_surface.get_height()
+    img_width = image_surface.get_width()
+    width_ratio = float(width) / float(img_width)
+    height_ratio = float(height) / float(img_height)
+    scale_xy = min(height_ratio, width_ratio)
+    # scale image and add it
+    cr.save()
+    cr.translate(left, top)
+    cr.scale(scale_xy, scale_xy)
+    cr.set_source_surface(image_surface)
+    cr.paint()
+    cr.restore()
+    
+    #create a separate png file of the badge
+    ctx.save()
+    ctx.translate(82,82)
+    r=float(m_width) / float(img_width+82)
+    ctx.scale(r,r)
+    ctx.set_source_surface(image_surface)
+    ctx.paint()
+    ctx.restore()
+    tempps.write_to_png('runresults/primerunner '+str(current_run.date)+' '+text1+str(milestone)+'.png')
+    print('Milestone badge file saved ')
+    
+def text_on_a_circle(ctx,x,y,radius, text1, text2, text3, gap):
+    # on cairo context ctx, this distributes three text items evenly around a circle centred on x,y of given radius. 
+    # gap extends or compresses the letter spacing. (1= normal)
+    # It uses context.rotate, firstly with rectangles around the centrepoint
+    # then with rectangles of size 0 to move out to radius and a 90 degree rotate so letters sit on the circle
+    ctx.translate(x,y)                                # move 0,0 origin to the required position
+    l1 = ctx.text_extents(text1+text2+text3)[4] * gap # find total length of text
+    r2=radius+ctx.text_extents('M')[3]/2
+    l2 = 2*radius*math.pi                             # find circumference of the circle of text
+    while l1 > l2-ctx.text_extents('M')[4]:                           # trim back text if too long
+        l1 -= ctx.text_extents(text3[-1])[4] * gap
+        text3=text3[:-1]
+        print(text3)
+    l3 = (l2-l1)/3                             # distribute the empty space left after text length
+    text4=text1+'#'+text2+'#'+text3            # with a padding chr between each text item
+    extra = (1-l1/l2)*360
+    padding_gap=extra*math.pi/180/3
+#     if l3/radius > 1:                          # catch any angles too wide for asin()
+#         extra= (l3/radius)%1
+#         padding_gap=math.asin(extra) + (l3/radius-extra)* math.asin(1)/2
+#         print ('extra',l3/radius, extra,padding_gap/math.pi*180,'deg')
+#     else:
+#         padding_gap=math.asin(l3/radius)
+#         print ('l3=',l3,'pad',l2/360*(padding_gap/math.pi*180),'gap')
+#     print ('pad1',padding_gap/math.pi*180,'deg')
+
+#     while l3 > l2/360*(padding_gap/math.pi*180): # resolve chord v circumference discrepancy (near enough!)
+#         padding_gap += 0.5*math.pi/180   
+#     print ('pad2',padding_gap/math.pi*180,'deg')
+#     while l3 < l2/360*(padding_gap/math.pi*180): # resolve chord v circumference discrepancy (near enough!)
+#         padding_gap -= 0.5*math.pi/180   
+    print ('pad3',padding_gap/math.pi*180,'deg')
+
+    
+    ctx.rotate(-120*math.pi/180)               # set start point at 11 o'clock (0 = 3 o'clock)
+    hash=False
+    for a in range(len(text4)):                # for each letter in turn
+        if text4[a] == '#':                    #check to see if it is a padding gap '#'
+            ctx.rotate(padding_gap)                      # and move on by that angle
+            continue
+        ctx.set_source_rgba (1,0,0, 0)         # set up the radius rectangle, with invisible ink
+        ctx.rectangle(0,0,8,8)                 # this would make a central dot of size 8 if not invisible
+        ctx.stroke()
+        ctx.save()                             # set up the zero sized rectangle at radius distance from origin 
+        ctx.rectangle(radius+1,-1,0,0)         # first with an offset for shadow
+        ctx.rotate(90*math.pi/180)             # and turn the letter 90 degrees
+        ctx.set_source_rgba (0,0,0,1)          # color of offset text
+        ctx.show_text(text4[a])
+        ctx.fill()
+        ctx.restore()
+        ctx.save()                              # and do it again for real
+        ctx.rectangle(radius,0,0,0)
+        ctx.rotate(90*math.pi/180)        
+        if text4[a] in ('ABCDEFGHIJKLNOPQRSTUVWXYZ'): # highlight the captal letters
+            ctx.set_source_rgba (1,0.8,0.2,1)
+        else:
+            ctx.set_source_rgba (0.9,0.8,0.5,1)  # color of actual text
+        ctx.show_text(text4[a])
+        ctx.fill()
+        ctx.restore()
+        b=ctx.text_extents(text4[a])[4] * gap   # find the width of the letter
+        c=math.asin(b/radius)                   # find the angle to move that width round the circle
+        ctx.rotate(c)                           # and move on by that angle
+        
+    ctx.translate(-x,-y)                        # all done. undo the first translate
+    
+def add_badge(cr, item_start, star, xh):
+    """Draw a scaled image on a given context."""
+    top = (item_start+75)*sf
+    left = 255*sf+random.randint(1,14)
+    height, width = 80*sf,80*sf
+
+    image_surface = cairo.ImageSurface.create_from_png("primebadge"+str(star.primes)+".png")
+    # calculate proportional scaling
+    img_height = image_surface.get_height()
+    img_width = image_surface.get_width()
+    width_ratio = float(width) / float(img_width)
+    height_ratio = float(height) / float(img_height)
+    scale_xy = min(height_ratio, width_ratio)
+    # scale image and add it
+    cr.save()
+    cr.translate(left, top)
+    cr.scale(scale_xy, scale_xy)
+    cr.set_source_surface(image_surface)
+
+    cr.paint()
+    cr.restore()
+    cr.save()
+    cr.set_source_rgba(0.1, 0.1, 0.1, 0.5)
+    cr.select_font_face("Sans", cairo.FONT_SLANT_NORMAL,
+                cairo.FONT_WEIGHT_NORMAL)
+    cr.set_font_size(14)
+    cr.move_to(left+32, top+72)
+    cr.rotate(-0.02-(0.015*random.randint(1,9)))
+    cr.show_text(str(star.date))
+    cr.restore()
+    
+def add_even_badge(cr, item_start, star, xh):
+    """Draw a scaled image on a given context."""
+    top = (item_start+173)*sf
+    left = 325*sf+random.randint(1,14)
+    height, width = 60*sf,60*sf
+    if star.run_num % 2 == 1:
+        image_surface = cairo.ImageSurface.create_from_png("Oddbadge0.png")
+    else:
+        image_surface = cairo.ImageSurface.create_from_png("Evenbadge0.png")
+    # calculate proportional scaling
+    img_height = image_surface.get_height()
+    img_width = image_surface.get_width()
+    width_ratio = float(width) / float(img_width)
+    height_ratio = float(height) / float(img_height)
+    scale_xy = min(height_ratio, width_ratio)
+    # scale image and add it
+    cr.save()
+    cr.translate(left, top)
+    cr.scale(scale_xy, scale_xy)
+    cr.set_source_surface(image_surface)
+
+    cr.paint()
+    cr.restore()
+    cr.save()
+    cr.set_source_rgba(0.1, 0.1, 0.1, 0.5)
+    cr.select_font_face("Sans", cairo.FONT_SLANT_NORMAL,
+                cairo.FONT_WEIGHT_NORMAL)
+    cr.set_font_size(14)
+    cr.move_to(left+25, top+56)
+    cr.rotate(-0.02-(0.015*random.randint(1,9)))
+    cr.show_text(str(star.date))
+    cr.restore()
+    
+def rgb_hex(rgb):
+    if(rgb[0] =='#'):
+        print(rgb)
+        return(int(rgb[1:3],16)/255, int(rgb[3:5],16)/255, int(rgb[5:7],16)/255)
+    elif rgb == 'blue1': a='#4A95C0'
+    elif rgb == 'blue2': a='#A4CFE8'
+    elif rgb == 'green1': a='#219A21'
+    elif rgb == 'green2': a='#65CA65'
+    elif rgb == 'red1': a='#F6672A'
+    elif rgb == 'red2': a='#BA5077'
+    elif rgb == 'pale': a='#EFEFEF'
+    elif rgb == 'white': a='#FFFFFF'   
+    elif rgb == 'yellow': a='#E6E982' 
+    elif rgb == 'lightblue': a='#82C3E9'
+    elif rgb == 'lightgreen': a='#8EB56C'
+    elif rgb == 'lightred': a='#F5638F'
+    elif rgb == 'violet': a='#E1A9EC'
+    else: a ='#020202'
+    return(int(a[1:3],16)/255, int(a[3:5],16)/255, int(a[5:7],16)/255)
+    
+def draw_button(cr,top,left,size,fillc):
+    cr.move_to(left,top)
+
+    ink = rgb_hex('white')
+    cr.set_source_rgba(ink[0], ink[1], ink[2], 1)  
+    cr.arc(left-0.8, top-0.8, size, 0, 2*math.pi)
+    cr.stroke()
+
+    ink = rgb_hex('grey')
+    cr.set_source_rgba(ink[0], ink[1], ink[2], 0.35)  
+    cr.arc(left+1, top+1, size, -.25*math.pi, 0.75*math.pi)
+    cr.stroke()
+    
+    ink = rgb_hex('pale')
+    cr.set_source_rgba(ink[0], ink[1], ink[2], 1)  
+    cr.arc(left, top, size, 0, 2*math.pi)
+    cr.stroke()
+    
+    ink = rgb_hex('grey')
+    cr.set_source_rgba(ink[0], ink[1], ink[2], 0.75)  
+    cr.arc(left+0.5, top+0.5, size-1.2, 0, 2*math.pi)
+    cr.fill()
+    
+    ink = rgb_hex(fillc)
+    cr.set_source_rgba(ink[0], ink[1], ink[2], 1)  
+    cr.arc(left-0.4, top-0.4, size-1, 0, 2*math.pi)
+    cr.fill()
+
+    
+def get_runner(name,barcode,linelist, guest=False):
+    results=get_result(name)
+    
+    print('list for',name)
+#    for row in results:
+#        print(row.date, row.time, row.event_number)
+    thisyear=datetime.datetime(2023,1,1)
+    with open('runannual/'+name+'2023.csv', 'w', newline='') as f:
+        writer = csv.writer(f)
+        for row in results:
+            # if row.date.year == thisyear.year:
+            writer.writerow([row.date,row.time,row.pb,row.location,row.event_number,row.position,row.grade])
+    print('File created for',name)
+#		self.date         = date
+#		self.time         = time
+#		self.pb           = pb
+#		self.location     = location
+#		self.event_number = event_number
+#		self.position     = position
+#		self.grade        = grade
+ 
+    event_run_count=0
+    initial_list=''
+    event=results[0]
+    event_initial_count=0
+    print(event)
+    y=event.date.year
+    runs_ty=0
+    locs_ty=0
+    thisloc_ty=0
+    locslist=[]
+    totlocslist=[]
+    runs_in_a_row=0
+    days_in_row=event.date + timedelta(days=7)
+    endofrun=1
+    best_time_this_year = parse_duration('2:00:00')
+    for row in results:
+        if row.location == event.location: event_run_count += 1 # count the runs at this location
+        if not row.location[0] in initial_list: # build up the list of initial letters
+            initial_list=initial_list+row.location[0]
+        if row.location[0] == event.location[0]:
+            event_initial_count += 1          # If this is stuck at 1, this week's is a new initial letter
+        totlocslist.append(row.location)      # Build list of all instances of all locations
+        if event.date.year == row.date.year:
+            runs_ty += 1                      # count the runs this year
+            if not row.location in locslist:
+                locs_ty += 1                  # count the locations this year
+                locslist.append(row.location)
+            if row.location == event.location:
+                thisloc_ty += 1  # count the runs at this location, this year
+                if endofrun == 1 and row.date == days_in_row - timedelta(days=7):
+                    runs_in_a_row += 1
+                    days_in_row = days_in_row - timedelta(days=7)
+                else:
+                    endofrun=0
+        if row.date == event.date - timedelta(days=7):
+            if row.location == event.location and row.time == event.time:
+                # Groundhog day. Add to badgelist
+                #check_badge('groundhog',1,name,event.date)
+                remove_old_records(bl_new, 'groundhog')
+                add_side_badge('groundhog',1, name, event.date)
+                print(' Groundhog Day for', name, row.date, event.date)
+        if row.time < best_time_this_year and row.date.year == event.date.year and row.date != event.date:
+            best_time_this_year = row.time
+    tot_locs = len(set(totlocslist))
+    print('Total venues:',tot_locs)
+    if totlocslist.count(event.location) == 1:
+        print('New Venue')
+    else:
+        tot_locs = 0           # reset to zero, so it only gets on report if it is a new location
+    print('runs this year: ', runs_ty)
+    print('locs this year: ', locs_ty)
+    print('Best time this year: ', best_time_this_year)
+    if event.time < best_time_this_year:
+        print('New best time: ',event.time)
+        t1 = best_time_this_year - event.time
+        print('An improvement of', t1.seconds, 'seconds')
+        secs_faster =int(t1.seconds)
+    else:
+        secs_faster=0
+    print ('secs faster =',secs_faster)
+    print(thisloc_ty,' runs at this location this year')
+    print('runs in a row = ',runs_in_a_row)
+    if thisloc_ty == 1: print('newloc')
+    print('first run= ',results[-1].date)
+
+    if guest: print('Guest')
+    
+    lastevent=len(results)-1
+    p=sorted(initial_list)
+#     print(*p, len(p))
+    linelist=get_last_result(linelist, name, lastevent+1, 
+                event_run_count, p, event_initial_count, results[0], 
+                             runs_ty, locs_ty, thisloc_ty, runs_in_a_row,guest, 
+                             results[-1].date, secs_faster, tot_locs)
+    return linelist
+
+def sortkey(v):
+    return v['event_run']
+
+
+def create_badgelist():
+    badgelist=[]
+    badgelist.append(["badge","value","holder",parse_datetime("2022.08.20")])
+    badgelist.append(["year_tourist","8","Robin",parse_datetime("2022.08.20")])
+    badgelist.append(["xinarow", "3", "Tom",parse_datetime("2022.08.20")])
+    badgelist.append(["year_milestone","30","Kev",parse_datetime("2022.08.20")])
+    badgelist.append(["palindrome","0","Anon",parse_datetime("2022.08.20")])
+    badgelist.append(["prime_count","2","Kev",parse_datetime("2022.08.20")])
+    badgelist.append(["prime_count","2","Tom",parse_datetime("2022.08.20")])
+    badgelist.append(["prime_count","4","Robin",parse_datetime("2022.08.20")])
+    badgelist.append(["prime_count","1","Trev",parse_datetime("2022.08.20")])
+    badgelist.append(["prime_count","0","William",parse_datetime("2022.08.20")])
+    print('badgelistdata.csv reset to start-values')
+    with open('badgelistdata.csv', 'w', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerows(badgelist)
+
+def pop_badge(badgetype, newval):
+    count=0
+    while count < len(bl_new):
+        t=bl_new[count]
+        if t.badge == badgetype and int(t.value) < int(newval):
+            print('deleted '+badgetype+' - '+t.holder)
+            bl_new.pop(count)
+        else:
+            count += 1
+    return
+            
+def add_side_badge(badgetype,value,holder,score_date):
+    bl_new.append(badge_list(badgetype,value,holder,score_date))
+    print(badgetype, value, ' added for ',holder)
+    return
+
+def check_badge(badgetype,value,holder,score_date):
+    count=1
+    newval=int(value)
+    while count < len(bl_old):
+        t=bl_old[count]
+        if badgetype in ("palindrome","groundhog") and newval > 0: newval=int(t.value)+1
+        if t.badge == badgetype and newval > int(t.value):
+            pop_badge(badgetype, str(newval))
+            if badgetype in ("palindrome","groundhog") and score_date == t.score_date: newval -= 1 
+                # avoid increments if re-running on same data
+            add_side_badge(badgetype,str(newval),holder,score_date)
+            return
+        else:
+            count += 1
+    return
+    
+def read_badgelist (bl, filename):
+    with open(filename, newline='') as f:
+        tf = csv.reader(f)
+        for row in tf:
+            # print(row)
+            bl.append(badge_list(row[0], row[1], row[2], date.fromisoformat(row[3])))
+    return(bl)
+
+def print_list(bl):
+    for row in bl:
+        print(row.badge, row.value, row.holder, str(row.score_date))
+        
+def write_badgelist(bl, file_n, file_o):
+    if os.path.exists(file_o): os.remove(file_o)
+    os.rename(file_n, file_o)
+    with open(file_n, 'w', newline='') as f:
+        writer = csv.writer(f)
+        for row in bl:
+            writer.writerow([row.badge, row.value, row.holder, str(row.score_date)])
+
+def add_to_prime_count(name,score_date,awarded):
+    for row in bl_new:
+        if row.badge == 'prime_count' and row.holder == name and row.score_date < score_date:
+            if awarded: 
+                row.value = str(int(row.value)+1)
+                row.score_date = score_date
+                print('+1')
+            # print('prime badge',name,row.value)
+
+def badge_score(bl_new, badgetype, holder):
+    for t in bl_new:
+        if t.badge == badgetype and t.holder == holder:
+            return str(t.value)
+    return "0"
+
+def add_one_to_score(bl, badgetype, holder, run_date):
+    for t in bl:
+        if t.badge==badgetype and t.holder==holder:
+            if t.score_date < run_date:
+                t.value =str(int(t.value)+1)
+                t.score_date=run_date
+            return t.value
+    bl.append(badge_list(badgetype, "1", holder, run_date))
+    return "1"
+
+def remove_old_records(bl, badgetype):
+    count=0
+    while count < len(bl):
+        t=bl[count]
+        if t.badge == badgetype:
+            print('deleted '+badgetype+' - '+t.holder)
+            bl.pop(count)
+        else:
+            count += 1
+
+def check_and_update_score(bl, badgetype, new_score, new_holder,  run_date):
+    x=0
+    for t in bl:
+        if t.badge==badgetype and int(t.value) < int(new_score):
+            remove_old_records(bl, badgetype)
+            bl.append(badge_list(badgetype, new_score, new_holder, run_date))
+            return
+        if t.badge==badgetype and int(t.value) == int(new_score) and t.score_date == run_date: # add extra score if it is a tie
+            bl.append(badge_list(badgetype, new_score, new_holder, run_date))
+            return
+        if t.badge==badgetype: x += 1
+    if x==0:
+        bl.append(badge_list(badgetype, new_score, new_holder, run_date)) # no record, so start new item
+
+def expanded_badge_text(b):
+    if b == "year_milestone": return "Holder of the Event Milestone badge for the year, with: "
+    elif b=="prime_count": return "Total number of prime badges won in the year: "
+    elif b=="year_tourist": return "Holder of the Tourist badge for the year, with: "
+    elif int(b) > 0:
+        t1,text1=check_for_button(int(b))
+        if t1: return "Buttons for scoring "+b+" ("+text1+"): " 
+    else: return b
+        
+def print_scores_for(bl,name):
+    print("Score sheet for ", name)
+    for t in bl:
+        if t.holder==name:
+            print(expanded_badge_text(t.badge),t.value)
+    
+def check_for_button(val):
+    if val == 3: return (True, "Three Men in a Boat")
+    elif val == 7: return (True, "Magnificent Seven")
+    elif val == 10: return (True, "Downing Street")
+    elif val == 12: return (True, "Year of Months")
+    elif val == 24: return (True, "Hours")
+    elif val == 26: return (True, "Marathon Miles")
+    elif val == 39: return (True, "Thirty-nine Steps")
+    elif val == 42: return (True, "Life, The Universe and Everything")
+    elif val == 43: return (True, "Emporer Claudius's Invasion")
+    elif val == 52: return (True, "Year of Weeks")
+    elif val == 54: return (True, "Julius Caesar's Invasion")
+    elif val == 76: return (True, "Trombones")
+    elif val == 99: return (True, "Einsteinium (Atomic No 99)")
+    elif val == 101: return (True, "Hundred and One Dalmations")
+    elif val == 122: return (True, "Hadrian's Wall")
+    elif val == 147: return (True, "Maximum Break")
+    elif val == 180: return (True, "One-hundred-and Eighteeee!!!")
+    elif val == 240: return (True, "Hertz (that's electric!)")
+    elif val == 273: return (True, "Kelvin (0 degrees C")
+    elif val == 300: return (True, "Spartans at Thermopylae")
+    elif val == 365: return (True, "Year of Days")
+    elif val == 410: return (True, "End of Roman Rule")
+    elif val == 563: return (True, "Columba at Iona")
+    elif val == 597: return (True, "Augustine at Canterbury")
+    elif val == 600: return (True, "Charge of the Light Brigade")
+    elif val == 633: return (True, "Six-Three-Three Squadron")
+    elif val == 878: return (True, "Danelaw")
+    elif val == 84: return (True, "1984 Big Brother")
+    elif val == 2020: return (True, "Twenty-twenty Vision")
+    elif val == 2222: return (True, "Tootie-Two:Tootie-two")
+    elif val == 3142: return (True, "Pi to 3 decimal places")
+    elif val == 3333: return (True, "Threetie-three:Threetie-three")
+    elif val == 4444: return (True, "forty-four:forty-four")
+    elif val == 5555: return (True, "fifty-five:fifty-five")
+    else: return (False,"")
+    
+# list of 'special number' buttons to be awarded:
+# 3 Three Men in a Boat  (any of 1-4)
+# 7 Magnificent Seven (any of 1-4)
+# 10 Downing Street
+# 12 A Year of Months
+# 24 Hours
+# 26 Marathon Miles
+# 39 Thirty-nine Steps
+# 42 Life, The Universe and Everything
+# 43 Emporer Claudius's Invasion
+# 52 A Year of Weeks
+# 54 Julius Caesar's Invasion
+# 99 Einsteinium (Atomic No 99)
+# 101 Dalmations
+# 122 Hadrian's Wall
+# 147 Maximum Break
+# 180 One-hundred-and Eighteeee!!!
+# 300 Spartans at Thermopylae (Go tell the Spartans, passerby/ That here, by Spartan law, we lie)
+# 365 A Year of Days
+# 410 End of Roman Rule
+# 563 Columba at Iona
+# 597 Augustine at Canterbury
+# 633 Six-Three-Three Squadron
+# 878 King Cnut's Danelaw
+# 1984 Nineteen-eighty-four
+# 2020 Vision
+
+
+def draw_side_badge (cr, item_start, badgetype, value, name, ran):
+    height, width = 30*sf,30*sf
+    top = (item_start+110)*sf
+    if not ran: top = (item_start+90)*sf
+    left = 400*sf
+    cr.save()
+    if badgetype == "year_milestone":
+        top += 3
+        if ran: top += 7
+        ink = rgb_hex('lightblue')
+        draw_hexagon(cr,left, top, ink, str(current_run.date.year),value,"milestone")
+    if badgetype == "year_tourist":
+        top += 6
+        if ran: top += 37
+        ink = rgb_hex('lightgreen')
+        draw_hexagon(cr,left, top, ink, str(current_run.date.year),value,"  tourist")
+    if badgetype == "xinarow":
+        top += 9
+        if ran: top += 67
+        ink = rgb_hex('lightred')
+        draw_hexagon(cr,left, top, ink, str(current_run.date.year),value," 'in a row'")
+    if badgetype == "palindrome" and ran:
+        draw_palindrome(cr,item_start,True)
+    if badgetype == "groundhog" and ran:
+        for t in bl_new:
+            if t.badge == badgetype and t.holder == name:
+                if t.score_date == current_run.date:
+                    draw_groundhog(cr,item_start,False, name)
+                    print('Groundhog today!!')
+                else:
+                    draw_groundhog(cr,item_start,True, name) 
+                    print('Groundhog from records!!')
+    cr.restore()
+
+def draw_hexagon(cr, left, top, ink, text1, value, text2):
+    cr.move_to(left,top)
+    D = 40*sf
+    p = (
+        (math.sqrt(3)*D/4., D/4.),
+        (0, D/2.),
+        (-math.sqrt(3)*D/4., D/4.),
+        (-math.sqrt(3)*D/4., -D/4.),
+        (0, -D/2.),
+        (math.sqrt(3)*D/4.,-D/4.)
+    )
+    for pair in p:
+        cr.rel_line_to(pair[0]+0.7,pair[1]+0.7)
+    cr.close_path()
+    cr.set_source_rgba(0,0,0,0.4)
+    cr.stroke()
+    cr.move_to(left,top)
+    for pair in p:
+        cr.rel_line_to(pair[0],pair[1])
+    cr.close_path()
+    ink1=rgb_hex('yellow')
+    cr.set_source_rgba(ink1[0], ink1[1], ink1[2],1)
+    cr.stroke_preserve()
+    cr.set_source_rgba(ink[0], ink[1], ink[2], 1) 
+    cr.fill()
+    pad=0
+    if int(value) < 10: pad=6 
+    centre_text(cr,text1,15,False,left-18,top+22,rgb_hex('yellow'))
+    centre_text(cr,value,26,True,left-15+pad,top+44,rgb_hex('white'))
+    centre_text(cr,text2,15,False,left-31,top+57,rgb_hex('yellow'))
+    centre_text(cr,'badge',12,False,left-17,top+68,rgb_hex('yellow'))
+
+    
+def centre_text(cr,text,size,bold,left,top,color):
+    cr.set_font_size(size)
+    if bold:
+        cr.select_font_face("Arial",
+                     cairo.FONT_SLANT_NORMAL,
+                     cairo.FONT_WEIGHT_BOLD)
+    else:
+        cr.select_font_face("Arial",
+                     cairo.FONT_SLANT_NORMAL,
+                     cairo.FONT_WEIGHT_NORMAL)
+    if bold:
+        cr.set_source_rgba(0,0,0,0.4)
+        cr.move_to(left+0.7, top+0.7)
+        cr.show_text(text)   
+    cr.set_source_rgba(color[0], color[1], color[2], 1) 
+    cr.move_to(left, top)
+    cr.show_text(text)
+
+        
+
+
+# create_badgelist()
+# Use this to reset values to start-state. (May want to back-up old file first)
+
+global bl_old            
+bl_old = []            
+bl_old=read_badgelist (bl_old,'badgelistdata.csv')
+global bl_new
+bl_new = []       
+bl_new=read_badgelist (bl_new,'badgelistdata.csv')
+# needs two data copies, so the old results can be checked, and the new one updated
+# print('Data from file')
+# print_list(bl_old)
+# bl_new = check_badge(bl_old, bl_new, "xinarow", "1", "Kev")
+# bl_new = check_badge(bl_old, bl_new, "xinarow", "1", "Tom")
+# bl_new = check_badge(bl_old, bl_new, "year_milestone", "30", "Robin")
+# bl_new = add_to_prime_count(bl_new,'Tom',False)
+# bl_new = add_to_prime_count(bl_new,'Robin',False)
+# bl_new = add_to_prime_count(bl_new,'William',True)
+# print('Data after checks')
+# print_list(bl_new)
+
+# for row in (["year_milestone", "xinarow", "year_tourist"]):
+#    for name in (["Kev", "Tom", "Robin", "Trev", "William"]):
+#        x= badge_score(bl_new,row,name)
+#        if x > "0": print(name, " scores ", x, " for ", row)
+
+
+
+linelist=[]
+linelist=get_runner('Robin','6385235',linelist)
+linelist=get_runner('Kev','447402',linelist)
+linelist=get_runner('Tom','444643',linelist)
+linelist=get_runner('Trev','860652',linelist)
+linelist=get_runner('William','777802',linelist)
+# linelist=get_runner('Rosie','4154567',linelist, guest=True)
+# linelist=get_runner('Esther','6387178',linelist, guest=True)
+#linelist=get_runner('Sarah','1143088',linelist, guest=True)
+
+winning_primes=0
+current_run = copy.copy(linelist[2])
+
+# current_run.pb=True
+# current_run.location='Alpha'
+# current_run.event_initial_count=1
+
+ps = cairo.ImageSurface.create_from_png("prime840x2200.png")
+#ps = cairo.ImageSurface.create_from_png("prime840x2000.png")
+
+# also available is "prime840x2000.png"
+#ps = cairo.SVGSurface("svgfile.svg", 840, 1600)
+cr = cairo.Context(ps)
+#cr.scale(600,600)
+
+sf=2
+xh=0
+
+print('linelist len')
+print(len(linelist))
+linelist = sorted(linelist, key=attrgetter('date','event_run'), reverse=True)
+#linelist = sorted(linelist, key=attrgetter('event_run'), reverse=True)
+for x in linelist: print(x.name,x.date, x.event_run)
+
+for x in linelist:
+    if str(x.date) > str(current_run.date): current_run=copy.copy(x)
+
+svg_page_setup(cr,current_run)
+n=0
+item_start=0
+
+for x in linelist:
+    xh=0
+    if x.date != current_run.date:
+        if not x.guest: print(x.name, 'last event = ', x.date)
+        xh -= 80
+    else:
+        if x.pb: 
+            xh += 12
+        ann_years, ann_days = check_anniversary (x.first_run_date, x.date)
+        if ann_days < 7: 
+            xh += 12
+        if x.event_initial_count == 1: 
+            xh += 12
+        if x.run_num % 5 == 0: 
+            xh += 12
+        if x.event_run % 5 == 0:
+            xh += 12
+        if (x.runs_this_year % 10 == 0 or x.runs_this_year > 47 
+            or x.locruns_this_year == 1
+            or x.locruns_this_year % 5 == 0
+            or x.tot_locs > 0):
+            xh += 16
+        if x.runs_in_a_row > 2:
+            xh += 12
+        if x.seconds_faster > 0:
+            xh += 12
+
+        def button_test1 (val1):
+            d=0
+            if val1 % 111 == 0: # and val1 != 111:
+                d += 20
+            t1,text1=check_for_button(val1)
+            if t1: d += 20
+            return d
+        
+        xh += button_test1(x.run_num)
+        xh += button_test1(x.position)
+        xh += button_test1(x.event_number)
+        xh += button_test1(x.event_run)
+        runtime=str(x.time)
+        runtime_n=int(runtime[2:4]+runtime[5:])
+        xh += button_test1(runtime_n)
+
+    if x.guest and x.date != current_run.date: 
+        print('no card for',x.name)
+    else:
+        draw_card(cr, item_start, x, x.date == current_run.date, xh)
+        n += 1
+        item_start += 140+xh
+
+    #print(linelist.primes[0])
+
+for x in linelist:
+    if x.primes > winning_primes: winning_primes = x.primes
+    for row in (["year_milestone", "xinarow", "year_tourist", "palindrome", "groundhog"]):
+        score = badge_score(bl_new,row,x.name)
+        if score > "0": 
+            print(x.name, "has the", row, "badge at", score)
+            draw_side_badge(cr, x.item_start, row, score, x.name, x.date == current_run.date)
+
+print('winning prime count = ',winning_primes)
+
+n=0
+for x in linelist:
+    runtime=str(x.time)
+    runtime_n=int(runtime[2:4]+runtime[5:])
+    
+    if x.primes == winning_primes: 
+        add_badge(cr,x.item_start,x,xh) #Add badge for each winning prime
+    add_to_prime_count(x.name,x.date,x.primes == winning_primes) # update primes on score file
+    if (x.date == current_run.date and x.run_num % 2 == 0 and x.event_run % 2 == 0 
+          and runtime_n %2 ==0 and x.event_number % 2 == 0 and x.position % 2 == 0):
+        add_even_badge(cr,x.item_start,x,xh) #Add consolation badge if they are all even numbers
+        print('Even!!!!')
+    if (x.date == current_run.date and x.run_num % 2 == 1 and x.event_run % 2 == 1 
+          and runtime_n %2 ==1 and x.event_number % 2 == 1 and x.position % 2 == 1):
+        print('Odd!!!!')
+        add_even_badge(cr,x.item_start,x,xh) #Add bonus badge if they are all odd numbers
+    n += 1
+    if x.date == current_run.date:
+        print(x.name,"Prime badges", badge_score(bl_new,"prime_count", x.name))
+        cr.set_source_rgba(.87, .95, .56, 1)
+        cr.set_font_size(16)
+        cr.select_font_face("Times", cairo.FONT_SLANT_ITALIC,
+            cairo.FONT_WEIGHT_NORMAL)
+        cr.move_to(132*sf,(x.item_start+99)*sf)
+        cr.show_text(badge_score(bl_new, "prime_count", x.name)+" PRBs in "+str(current_run.date.year))   
+ 
+    
+# print_data(linelist[0])
+# print()
+
+# print_data(linelist[1])
+# print()
+# draw_card(cr, 1, linelist[1])
+# add_badge(cr,1,4)
+# cr.save()
+if input("Confirm: Update the badgelist file? [Y/N]".lower()) == "y":
+    write_badgelist(bl_new, 'badgelistdata.csv', 'badgelistdata.old')
+    print("Badgelist file is updated.")
+else:
+    print("File not updated.")
+ps.write_to_png('runresults/primerunner '+str(current_run.date)+'.png')
+print("runresults png has been created.")
+print_list(bl_new)
