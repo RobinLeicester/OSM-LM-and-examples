@@ -1,0 +1,54 @@
+function maptogrid(t)
+[[-- converts mercator projection longitude and latitude coordinates
+into x and y pixel coordinates, within a frame of given size, centre coordinates and zoom level.
+Input t is a table of
+{ lon,  lat, lonbase, latbase, width, height=300, zoom=15 } --]]
+
+    local x=t.width/2 + ( ((t.lon*(math.pi/180)*6378137) - (t.lonbase*(math.pi/180)* 6378137) )  / (156543.03*math.cos(t.latbase/180)/(2^t.zoom) ) )*(1-(0.11*(t.latbase/180)))
+
+    local y=t.height/2 + ( ( (math.log(math.tan(t.latbase*(math.pi/180)/2+math.pi/4))*6378137) - (math.log(math.tan(t.lat*(math.pi/180)/2+math.pi/4))*6378137) ) / (156543.03*math.cos(t.latbase/180) / (2^t.zoom) ) )*(1-(0.11*(t.latbase/180) ) ) 
+    return round(x),round(y)
+end
+
+function round(x)
+  return x>=0 and math.floor(x+0.5) or math.ceil(x-0.5)
+end
+local coordlist={
+    lon=-4.505, 
+    lat=53.705,
+    lonbase=-4.5,
+    latbase=53.7,
+    width=200,
+    height=300,
+    zoom=15,
+    latlon=true}
+
+px,py=maptogrid(coordlist)
+print(px,py)
+coordlist.latlon=false
+coordlist.lon=-4.507
+px,py=maptogrid(coordlist)
+print(px,py)
+
+[[-- width and height are the size, in pixels, of the map, which will be centerd around lonbase,latbase
+
+converts lon and lon-base to meter-offsets from coord(0,0), 
+subtracts lonbase from lon,
+uses zoom and latbase to scale the resulting meter-offset to pixels, and adds it to width.
+and converts lat and lat-base to meter-offsets from coord(0,0), 
+subtracts lat from latbase,
+scales the resulting meter-offset to pixels, adds it to height.
+
+I have no idea why it needs the correction factor at higher latitudes. It only really affects marks near the outsides of the frame.
+
+generates the "x": and "y" parameters for CSS values.
+
+Original Python code for xy with 0,0 as the centre of the map
+print('"x"=',width+(((math.radians(lon1) * 6378137)-
+      (math.radians(lonbase) * 6378137))/
+      (156543.03*math.cos(latbase/180)/(2**zoom))),' y=',height+((
+      (math.log(math.tan(math.pi / 4 + math.radians(latbase) / 2)) * 6378137)-
+      (math.log(math.tan(math.pi / 4 + math.radians(lat1) / 2)) * 6378137))/
+      (156543.03*math.cos(latbase/180)/(2**zoom)))
+     ) 
+sources: https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames and https://wiki.openstreetmap.org/wiki/Mercator --]]
