@@ -1,8 +1,9 @@
 function maptogrid(t)
-[[-- converts mercator projection longitude and latitude coordinates
+--[[ converts mercator projection longitude and latitude coordinates
 into x and y pixel coordinates, within a frame of given size, centre coordinates and zoom level.
 Input t is a table of
-{ lon,  lat, lonbase, latbase, width, height=300, zoom=15 } --]]
+{ lon,  lat, lonbase, latbase, width, height=300, zoom=15 } 
+output is two values, x and y, rounded to integer values--]]
 
     local x=t.width/2 + ( ((t.lon*(math.pi/180)*6378137) - (t.lonbase*(math.pi/180)* 6378137) )  / (156543.03*math.cos(t.latbase/180)/(2^t.zoom) ) )*(1-(0.11*(t.latbase/180)))
 
@@ -13,6 +14,7 @@ end
 function round(x)
   return x>=0 and math.floor(x+0.5) or math.ceil(x-0.5)
 end
+
 local coordlist={
     lon=-4.505, 
     lat=53.705,
@@ -20,17 +22,15 @@ local coordlist={
     latbase=53.7,
     width=200,
     height=300,
-    zoom=15,
-    latlon=true}
+    zoom=15 }
 
 px,py=maptogrid(coordlist)
 print(px,py)
-coordlist.latlon=false
 coordlist.lon=-4.507
 px,py=maptogrid(coordlist)
 print(px,py)
 
-[[-- width and height are the size, in pixels, of the map, which will be centerd around lonbase,latbase
+--[[ width and height are the size, in pixels, of the map, which will be centerd around lonbase,latbase
 
 converts lon and lon-base to meter-offsets from coord(0,0), 
 subtracts lonbase from lon,
